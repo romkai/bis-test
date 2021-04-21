@@ -117,9 +117,8 @@ export default new Vuex.Store({
 
 		// Дата последнего опер.дня
 		lastDate: (state, getters): string => {
-			const L = getters.operatingDates.length;
-			if (L === 0) return '';
-			return getters.operatingDates[L-1].OpDate;
+			if (getters.operatingDates.length === 0) return '';
+			return getters.operatingDates[0].OpDate;
 		},
 
 		// Остаток на некотором счете на некоторую дату
