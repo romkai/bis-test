@@ -153,7 +153,7 @@ export default class PageTemplate extends Vue {
 			.page-template__column-footer {
 				@include indent-outside;
 				@include indent-inside;
-				min-height: 50px;
+				min-height: 12px;
 				border-left: 1px solid $border-color;
 				border-right: 1px solid $border-color;
 			}

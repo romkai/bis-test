@@ -8,9 +8,8 @@
 			cols="3"
 		) {{ opEntry.OpDate }}
 		b-col(cols="4")
-			| {{ opEntry.AcctDB }}
-			br
-			| {{ opEntry.AcctCr }}
+			div {{ opEntry.AcctDB }}
+			div {{ opEntry.AcctCr }}
 		//- b-col(cols="3") {{ opEntry.AcctCr }}
 		b-col.text-right()
 			span {{ formatMoney(opEntry.Amount) }}

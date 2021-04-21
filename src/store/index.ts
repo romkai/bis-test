@@ -34,7 +34,7 @@ export default new Vuex.Store({
 			if (index === -1) return;
 			state.accounts.splice(index, 1);
 			// Удалим связанные записи из операций
-			state.operations = state.operations.filter(op => op.AcctDB === account.Acct || op.AcctCr === account.Acct);
+			state.operations = state.operations.filter(op => op.AcctDB !== account.Acct && op.AcctCr !== account.Acct);
 		},
 
 		// Operating Dates
