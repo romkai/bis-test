@@ -27,7 +27,7 @@
 				:key="index"
 				:opEntry="opEntry"
 				@click="activeOpEntry=opEntry"
-				:active="isEqual(opEntry, activeOpEntry)"
+				:active="opEntry.Id===activeOpEntry.Id"
 				@editOpEntry="editOpEntry(opEntry)"
 				@deleteOpEntry="deleteOpEntry(opEntry)"
 				hover
