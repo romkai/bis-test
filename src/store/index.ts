@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { sortBy, isEqual, orderBy } from 'lodash';
+import { sortBy, orderBy } from 'lodash';
 import { TOpEntry } from '@/entities/OpEntry';
 import { TAccount } from '@/entities/Account';
 import { TOpDate } from '@/entities/OpDate';
@@ -65,7 +65,7 @@ export default new Vuex.Store({
 			state.operations.splice(index, 1, op);
 		},
 		DELETE_OPERATION(state, op: TOpEntry) {
-			const index = state.operations.findIndex(item => isEqual(item, op));
+			const index = state.operations.findIndex(item => item.Id === op.Id);
 			if (index === -1) return;
 			state.operations.splice(index, 1);
 		},
