@@ -1,0 +1,47 @@
+$padding: 16px;
+$border-color: #dadada;
+
+@mixin indent-outside {
+	margin: 0 24px;
+}
+
+@mixin flex-column {
+	display: flex;
+	flex-direction: column;
+	max-width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+@mixin flex-inline {
+	display: flex;
+	max-width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+@mixin flex-main {
+	flex: 1 1 auto;
+	max-width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+@mixin indent-inside($mode: null) {
+	@if ($mode == 'scroll') {
+		$wrapper-padding: 4px;
+		$scroll-width: 8px;
+
+		padding: $wrapper-padding;
+
+		.scroll-area {
+			padding: 0 (($padding - $wrapper-padding) - $scroll-width) 0 ($padding - $wrapper-padding);
+			overflow: hidden;
+			overflow-y: scroll;
+			scroll-behavior: smooth;
+			height: 100%;
+		}
+	} @else {
+		padding: 0 $padding;
+	}
+}
