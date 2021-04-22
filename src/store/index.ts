@@ -6,7 +6,6 @@ import { TOpDate } from '@/blogic/entities/OpDate';
 import accountsData from '@/store/json/acct.json';
 import opDatesData from '@/store/json/opdate.json';
 import opEntriesData from '@/store/json/doc.json';
-import timeoutPromise from '@/helpers/timeoutPromise';
 
 Vue.use(Vuex);
 
@@ -74,14 +73,13 @@ export default new Vuex.Store({
 
 		// Accounts
 		createAccount(context, account: TAccount) {
-			// timeoutPromise - имитация запроса к серверу 100мс
-			return timeoutPromise().then(() => context.commit('CREATE_ACCOUNT', account));
+			return context.commit('CREATE_ACCOUNT', account);
 		},
 		updateAccount(context, account: TAccount) {
-			return timeoutPromise().then(() => context.commit('UPDATE_ACCOUNT', account));
+			return context.commit('UPDATE_ACCOUNT', account);
 		},
 		deleteAccount(context, account: TAccount) {
-			return timeoutPromise().then(() => context.commit('DELETE_ACCOUNT', account));
+			return context.commit('DELETE_ACCOUNT', account);
 		},
 
 		// OpEntries
@@ -97,13 +95,13 @@ export default new Vuex.Store({
 
 		// OpDates
 		createOpDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('CREATE_OP_DATE', opDate));
+			return context.commit('CREATE_OP_DATE', opDate);
 		},
 		updateOpDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('UPDATE_OP_DATE', opDate));
+			return context.commit('UPDATE_OP_DATE', opDate);
 		},
 		deleteOpDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('DELETE_OP_DATE', opDate));
+			return context.commit('DELETE_OP_DATE', opDate);
 		},
 	},
 
