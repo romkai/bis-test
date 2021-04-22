@@ -18,7 +18,7 @@ class OpDatesMgr {
 		return store.dispatch('updateOpDate', opDate);
 	}
 	public deleteOpDate(opDate: TOpEntry): Promise<void> {
-		return $store.dispatch('deleteOpDate', opDate);
+		return store.dispatch('deleteOpDate', opDate);
 	}
 	public opDateExists(dt: string) {
 		return Boolean(store.state.opDates.find((opDate: TOpDate) => opDate.OpDate === dt));
