@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 
 @Component

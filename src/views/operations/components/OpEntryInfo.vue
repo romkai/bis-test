@@ -15,16 +15,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
+import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
+import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
 @Component
 export default class OpEntryInfo extends Vue {
 	@Prop({ type: Object, required: true }) opEntry!: TOpEntry;
 
-	lastDate = this.$store.getters.lastDate;
-	acctOstForDate = this.$store.getters.acctOstForDate;
 	moneyUnits = moneyUnits;
 	formatMoney = formatMoney;
+	acctOstForDate = AccountsMgr.acctOstForDate;
+	lastDate = OpDatesMgr.lastDate;
 }
 </script>

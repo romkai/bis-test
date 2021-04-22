@@ -69,13 +69,14 @@
 				@editOpEntry="editOpEntry(opEntry)"
 				@deleteOpEntry="deleteOpEntry(opEntry)"
 			)
+
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { TAccount } from '@/entities/Account';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TAccount } from '@/blogic/entities/Account';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/editAccountOperation';
 import addAccountOperation from '@/ui-operations/AddOrEditAccountOperation/addAccountOperation';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
@@ -86,6 +87,9 @@ import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
+import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
+import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
 @Component({
 	components: {
@@ -96,7 +100,7 @@ import nothingToDo from '@/ui-operations/nothingToDo';
 })
 export default class Accounts extends Vue {
 	activeAccount: TAccount|null = null;
-	currentDate = this.$store.getters.lastDate;
+	currentDate = OpDatesMgr.lastDate;
 
 	created(): void {
 		if (this.accounts.length) {
@@ -105,15 +109,13 @@ export default class Accounts extends Vue {
 	}
 
 	get accounts(): TAccount[] {
-		return this.$store.getters.accounts;
+		return AccountsMgr.getAccounts();
 	}
 
 	get operationsForAccount(): TOpEntry[] {
 		if (!this.activeAccount) return [];
-		return this.$store.getters.operationsForAccount(this.activeAccount.Acct);
+		return Operations.getOperationsForAccount(this.activeAccount?.Acct);
 	}
-
-	// действия
 
 	addAccount(): void {
 		addAccountOperation().then().catch(nothingToDo);

@@ -68,8 +68,8 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { TOpDate } from '@/entities/OpDate';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import PageTemplate from '@/components/template/page/PageTemplate.vue';
 import OpDateItem from '@/views/operating-dates/components/OpDateItem.vue';
 import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
@@ -80,6 +80,8 @@ import deleteOpDateOperation from '@/ui-operations/DeleteOpDateOperation/deleteO
 import editOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/editOpDateOperation';
 import addOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/addOpDateOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
+import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
 @Component({
 	components: { OpEntryItem, OpDateItem, PageTemplate },
@@ -94,12 +96,12 @@ export default class OperatingDates extends Vue {
 	}
 
 	get opDates(): TOpDate[] {
-		return this.$store.getters.operatingDates;
+		return OpDatesMgr.getOpDates();
 	}
 
 	get operationsForDate(): TOpEntry[] {
 		if (!this.activeOpDate) return [];
-		return this.$store.getters.operationsForDate(this.activeOpDate.OpDate);
+		return Operations.getOperationsForDate(this.activeOpDate.OpDate);
 	}
 
 	addOpDate(): void {

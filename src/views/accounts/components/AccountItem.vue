@@ -28,7 +28,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import { TAccount } from '@/entities/Account';
+import { TAccount } from '@/blogic/entities/Account';
+import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 
 @Component
 export default class AccountItem extends Vue {
@@ -38,6 +39,6 @@ export default class AccountItem extends Vue {
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
-	acctOstForDate = this.$store.getters.acctOstForDate;
+	acctOstForDate = AccountsMgr.acctOstForDate;
 }
 </script>

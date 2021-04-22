@@ -1,4 +1,4 @@
-import { TOpDate } from '@/entities/OpDate';
+import { TOpDate } from '@/blogic/entities/OpDate';
 
 export type TAddOpDateOperationInput = void
 

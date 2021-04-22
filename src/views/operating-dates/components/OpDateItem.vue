@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TOpDate } from '@/entities/OpDate';
+import { TOpDate } from '@/blogic/entities/OpDate';
 
 @Component
 export default class OpDateItem extends Vue {

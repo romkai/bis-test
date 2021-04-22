@@ -1,4 +1,4 @@
-import { TAccount } from '@/entities/Account';
+import { TAccount } from '@/blogic/entities/Account';
 
 export type TAddAccountOperationInput = void
 

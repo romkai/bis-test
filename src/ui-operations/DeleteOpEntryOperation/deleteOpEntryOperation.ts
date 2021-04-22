@@ -1,5 +1,5 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import MainContext from '@/helpers/MainContext';
 import nothingToDo from '@/ui-operations/nothingToDo';
 

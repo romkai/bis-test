@@ -1,6 +1,6 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
 import MainContext from '@/helpers/MainContext';
-import { TAccount } from '@/entities/Account';
+import { TAccount } from '@/blogic/entities/Account';
 import nothingToDo from '@/ui-operations/nothingToDo';
 
 export default function(account: TAccount): Promise<void> {

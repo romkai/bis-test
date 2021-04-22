@@ -57,7 +57,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import {
 	TAddOpEntryOperationInput,
 	TAddOpEntryOperationResult,
@@ -66,13 +66,14 @@ import {
 	isOpEntryEditing,
 } from '@/ui-operations/AddOrEditOpEntryOperation/types/AddOrEditOpEntryTypes';
 import MainContext from '@/helpers/MainContext';
-import { TAccount } from '@/entities/Account';
-import { TOpDate } from '@/entities/OpDate';
+import { TAccount } from '@/blogic/entities/Account';
+import { TOpDate } from '@/blogic/entities/OpDate';
+import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
 
 @Component
 export default class OpEntryDialog extends Vue {
-	@Prop() operationInput!: TAddOpEntryOperationInput|TEditOpEntryOperationInput;
-	@Prop() finishOperation!: (r: TAddOpEntryOperationResult|TEditOpEntryOperationResult) => void;
+	@Prop() operationInput!: TAddOpEntryOperationInput | TEditOpEntryOperationInput;
+	@Prop() finishOperation!: (r: TAddOpEntryOperationResult | TEditOpEntryOperationResult) => void;
 	@Prop() cancelOperation!: () => void;
 
 	show = true;
@@ -126,11 +127,11 @@ export default class OpEntryDialog extends Vue {
 	submit(): void {
 		this.DATA.Amount = Number(this.DATA.Amount); // string -> number
 		if (isOpEntryEditing(this.operationInput)) {
-			this.store.dispatch('updateOperation', this.DATA);
-			this.finishOperation({ opEntry: this.DATA });
+			Operations.updateOpEntry(this.DATA)
+				.then(() => this.finishOperation({ opEntry: this.DATA }));
 		} else {
-			this.store.dispatch('createOperation', this.DATA);
-			this.finishOperation({ opEntry: this.DATA });
+			Operations.createOpEntry(this.DATA)
+				.then(() => this.finishOperation({ opEntry: this.DATA }));
 		}
 	}
 

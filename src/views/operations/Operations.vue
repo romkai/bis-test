@@ -51,7 +51,7 @@
 
 import { isEqual } from 'lodash';
 import { Component, Vue } from 'vue-property-decorator';
-import { TOpEntry } from '@/entities/OpEntry';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
 import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
 import PageTemplate from '@/components/template/page/PageTemplate.vue';
 import OpEntryInfo from '@/views/operations/components/OpEntryInfo.vue';
@@ -59,6 +59,7 @@ import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOp
 import nothingToDo from '@/ui-operations/nothingToDo';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
+import OperationsMgr from '@/blogic/classes/OperationsMgr/OperationsMgr';
 
 @Component({
 	components: {
@@ -78,7 +79,7 @@ export default class Operations extends Vue {
 	}
 
 	get operations(): TOpEntry[] {
-		return this.$store.getters.operations;
+		return OperationsMgr.getOperations();
 	}
 
 	addOpEntry(): void {

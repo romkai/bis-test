@@ -34,23 +34,12 @@
 					required
 				)
 
-			//b-form-group(
-			//	id="input-group-3"
-			//)
-			//	b-form-checkbox-group(
-			//		id="checkboxes-3"
-			//	)
-			//		b-form-checkbox(
-			//			value="me"
-			//		) checkbox
-
-
 </template>
 
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TAccount } from '@/entities/Account';
+import { TAccount } from '@/blogic/entities/Account';
 import {
 	TAddAccountOperationInput,
 	TAddAccountOperationResult,
@@ -58,7 +47,7 @@ import {
 	TEditAccountOperationResult,
 	isAccountEditing,
 } from '@/ui-operations/AddOrEditAccountOperation/types/AddOrEditAccountTypes';
-import MainContext from '@/helpers/MainContext';
+import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 
 @Component
 export default class AccountDialog extends Vue {
@@ -67,7 +56,6 @@ export default class AccountDialog extends Vue {
 	@Prop() cancelOperation!: () => void;
 
 	show = true;
-	store = MainContext.$store;
 
 	get isAccountEditing(): boolean {
 		return isAccountEditing(this.operationInput);
@@ -86,7 +74,7 @@ export default class AccountDialog extends Vue {
 
 	get acctNameValid(): boolean {
 		return !!this.DATA.Acct &&
-			(this.isAccountEditing || !this.store.getters.accountExists(this.DATA.Acct));
+			(this.isAccountEditing || !AccountsMgr.accountExists(this.DATA.Acct));
 	}
 
 	get acctOstValid(): boolean {
@@ -104,11 +92,11 @@ export default class AccountDialog extends Vue {
 	submit(): void {
 		this.DATA.Ost = Number(this.DATA.Ost); // string -> number
 		if (isAccountEditing(this.operationInput)) {
-			this.store.dispatch('updateAccount', this.DATA);
-			this.finishOperation({ account: this.DATA });
+			AccountsMgr.updateAccount(this.DATA)
+				.then(() => this.finishOperation({ account: this.DATA }));
 		} else {
-			this.store.dispatch('createAccount', this.DATA);
-			this.finishOperation({ account: this.DATA });
+			AccountsMgr.createAccount(this.DATA)
+				.then(() => this.finishOperation({ account: this.DATA }));
 		}
 	}
 

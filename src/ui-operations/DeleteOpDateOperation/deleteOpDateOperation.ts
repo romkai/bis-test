@@ -1,6 +1,6 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
 import MainContext from '@/helpers/MainContext';
-import { TOpDate } from '@/entities/OpDate';
+import { TOpDate } from '@/blogic/entities/OpDate';
 import nothingToDo from '@/ui-operations/nothingToDo';
 
 export default function(opDate: TOpDate): Promise<void> {

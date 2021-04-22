@@ -26,7 +26,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpDate } from '@/entities/OpDate';
+import { TOpDate } from '@/blogic/entities/OpDate';
 import {
 	TAddOpDateOperationInput,
 	TAddOpDateOperationResult,
@@ -34,7 +34,7 @@ import {
 	TEditOpDateOperationResult,
 	isOpDateEditing,
 } from '@/ui-operations/AddOrEditOpDateOperation/types/AddOrEditOpDateTypes';
-import MainContext from '@/helpers/MainContext';
+import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
 @Component
 export default class OpDateDialog extends Vue {
@@ -43,7 +43,6 @@ export default class OpDateDialog extends Vue {
 	@Prop() cancelOperation!: () => void;
 
 	show = true;
-	store = MainContext.$store;
 
 	get isOpDateEditing(): boolean {
 		return isOpDateEditing(this.operationInput);
@@ -60,10 +59,9 @@ export default class OpDateDialog extends Vue {
 		}
 	}
 
-	get dateValid() {
-		console.log(this.DATA.OpDate, this.store.state.operatingDates);
+	get dateValid(): boolean {
 		return !!this.DATA.OpDate && (
-			this.isOpDateEditing || !this.store.getters.opDateExists(this.DATA.OpDate)
+			this.isOpDateEditing || !OpDatesMgr.opDateExists(this.DATA.OpDate)
 		);
 	}
 
@@ -77,11 +75,11 @@ export default class OpDateDialog extends Vue {
 
 	submit(): void {
 		if (isOpDateEditing(this.operationInput)) {
-			this.store.dispatch('updateOperatingDate', this.DATA);
-			this.finishOperation({ opDate: this.DATA });
+			OpDatesMgr.updateOpDate(this.DATA)
+				.then(() => this.finishOperation({ opDate: this.DATA }));
 		} else {
-			this.store.dispatch('createOperatingDate', this.DATA);
-			this.finishOperation({ opDate: this.DATA });
+			OpDatesMgr.createOpDate(this.DATA)
+				.then(() => this.finishOperation({ opDate: this.DATA }));
 		}
 	}
 

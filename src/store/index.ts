@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { sortBy, orderBy } from 'lodash';
-import { TOpEntry } from '@/entities/OpEntry';
-import { TAccount } from '@/entities/Account';
-import { TOpDate } from '@/entities/OpDate';
+import { TOpEntry } from '@/blogic/entities/OpEntry';
+import { TAccount } from '@/blogic/entities/Account';
+import { TOpDate } from '@/blogic/entities/OpDate';
 import accountsData from '@/store/json/acct.json';
 import opDatesData from '@/store/json/opdate.json';
 import operationsData from '@/store/json/doc.json';
@@ -87,13 +87,13 @@ export default new Vuex.Store({
 
 		// Operations
 		createOperation(context, op: TOpEntry) {
-			return timeoutPromise().then(() => context.commit('CREATE_OPERATION', op));
+			return context.commit('CREATE_OPERATION', op);
 		},
 		updateOperation(context, op: TOpEntry) {
-			return timeoutPromise().then(() => context.commit('UPDATE_OPERATION', op));
+			return context.commit('UPDATE_OPERATION', op);
 		},
 		deleteOperation(context, op: TOpEntry) {
-			return timeoutPromise().then(() => context.commit('DELETE_OPERATION', op));
+			return context.commit('DELETE_OPERATION', op);
 		},
 
 		// Operating Dates
@@ -115,45 +115,6 @@ export default new Vuex.Store({
 		operations: (state): TOpEntry[] => sortBy(state.operations, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']),
 		operatingDates: (state): TOpDate[] => orderBy(state.operatingDates,  ['OpDate'], ['desc']),
 
-		// Дата последнего опер.дня
-		lastDate: (state, getters): string => {
-			if (getters.operatingDates.length === 0) return '';
-			return getters.operatingDates[0].OpDate;
-		},
-
-		// Остаток на некотором счете на некоторую дату
-		acctOstForDate: (state, getters) => (acct: string, date: string): number => {
-			const account = getters.accounts.find((item: TAccount) => item.Acct === acct);
-			if (!account) return 0.00; // счет не найден
-			const initialAmount = account.Ost; // начальный остаток на счете
-			const periodAmount = getters.operations
-				.filter((op: TOpEntry) => op.OpDate <= date)
-				.reduce(
-					(acc: number, item: TOpEntry) =>
-						acc + (item.AcctCr === acct ? -item.Amount : 0) + (item.AcctDB === acct ? item.Amount : 0),
-				0); // обороты за период
-			return initialAmount + periodAmount;
-		},
-
-		// Операции по некоторому счету
-		operationsForAccount: (state, getters) => (acct: string): TOpEntry[] => {
-			return getters.operations.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
-		},
-
-		// Операции в некоторый опер.день
-		operationsForDate: (state) => (dt: string): TOpEntry[] => {
-			return sortBy(state.operations.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
-		},
-
-		// Есть ли такой счет
-		accountExists: (state) => (acct: string): boolean => {
-			return Boolean(state.accounts.find(acc => acc.Acct === acct));
-		},
-
-		// Есть ли такой опер.день
-		opDateExists: (state) => (dt: string): boolean => {
-			return Boolean(state.operatingDates.find(opDate => opDate.OpDate === dt));
-		},
 	},
 
 	modules: {},
