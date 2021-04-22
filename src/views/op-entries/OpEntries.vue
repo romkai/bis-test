@@ -79,7 +79,7 @@ export default class OpEntries extends Vue {
 	}
 
 	get opEntries(): TOpEntry[] {
-		return OpEntriesMgr.getOpEntries();
+		return OpEntriesMgr.opEntries;
 	}
 
 	addOpEntry(): void {

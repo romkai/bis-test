@@ -2,13 +2,14 @@ import MainContext from '@/helpers/MainContext';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
 import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
+import { sortBy } from 'lodash';
 
 class AccountsMgr {
-	public getAccounts(): TAccount[] {
-		return MainContext.$store.getters.accounts;
+	public get accounts(): TAccount[] {
+		return sortBy(MainContext.$store.state.accounts, 'Acct')
 	}
 	public acctOstForDate(acct: string, date: string): number {
-		const account = MainContext.$store.getters.accounts.find((item: TAccount) => item.Acct === acct);
+		const account = this.accounts.find((item: TAccount) => item.Acct === acct);
 		if (!account) return 0.00;
 		const initialAmount = account.Ost;
 		const periodAmount = OpEntriesMgr.getOpEntriesForAccount(acct)

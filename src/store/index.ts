@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { sortBy, orderBy } from 'lodash';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
 import { TOpDate } from '@/blogic/entities/OpDate';
@@ -109,12 +108,6 @@ export default new Vuex.Store({
 	},
 
 	getters: {
-
-		// Отсортированные данные
-		accounts: (state): TAccount[] => sortBy(state.accounts, 'Acct'),
-		opEntries: (state): TOpEntry[] => sortBy(state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']),
-		opDates: (state): TOpDate[] => orderBy(state.opDates,  ['OpDate'], ['desc']),
-
 	},
 
 	modules: {},

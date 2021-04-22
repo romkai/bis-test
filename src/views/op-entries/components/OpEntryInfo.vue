@@ -3,12 +3,12 @@
 		b-row.item-wrapper.text-body
 			b-col(cols="6") {{ opEntry.AcctDB }}
 			b-col.text-right(cols="6")
-				span {{ formatMoney(acctOstForDate(opEntry.AcctDB, lastDate)) }}
+				span {{ formatMoney(ostDb) }}
 				span.text--secondary.ml-1 {{ moneyUnits }}
 		b-row.item-wrapper.text-body
 			b-col(cols="6") {{ opEntry.AcctCr }}
 			b-col.text-right(cols="6")
-				span {{ formatMoney(acctOstForDate(opEntry.AcctCr, lastDate)) }}
+				span {{ formatMoney(ostCr) }}
 				span.text--secondary.ml-1 {{ moneyUnits }}
 
 </template>
@@ -25,8 +25,15 @@ export default class OpEntryInfo extends Vue {
 	@Prop({ type: Object, required: true }) opEntry!: TOpEntry;
 
 	moneyUnits = moneyUnits;
-	formatMoney = formatMoney;
-	acctOstForDate = AccountsMgr.acctOstForDate;
 	lastDate = OpDatesMgr.lastDate;
+	formatMoney = formatMoney;
+
+	get ostDb(): number {
+		return AccountsMgr.acctOstForDate(this.opEntry.AcctDB, this.lastDate);
+	}
+
+	get ostCr(): number {
+		return AccountsMgr.acctOstForDate(this.opEntry.AcctCr, this.lastDate);
+	}
 }
 </script>

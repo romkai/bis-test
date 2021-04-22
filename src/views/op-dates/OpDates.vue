@@ -96,7 +96,7 @@ export default class OpDates extends Vue {
 	}
 
 	get opDates(): TOpDate[] {
-		return OpDatesMgr.getOpDates();
+		return OpDatesMgr.opDates;
 	}
 
 	get opEntriesForDate(): TOpEntry[] {

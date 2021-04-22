@@ -3,14 +3,14 @@ import MainContext from '@/helpers/MainContext';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 
 class OpEntriesMgr {
-	public getOpEntries(): TOpEntry[] {
-		return MainContext.$store.getters.opEntries;
+	public get opEntries(): TOpEntry[] {
+		return sortBy(MainContext.$store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
 	}
 	public getOpEntriesForAccount(acct: string): TOpEntry[] {
-		return MainContext.$store.getters.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
+		return this.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
 	}
 	public getOpEntriesForDate(dt: string): TOpEntry[] {
-		return sortBy(MainContext.$store.getters.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
+		return sortBy(this.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
 		return MainContext.$store.dispatch('createOpEntry', opEntry);

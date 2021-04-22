@@ -5,7 +5,7 @@
 	)
 		b-col(cols="5") {{ account.Acct }}
 		b-col.text-right()
-			span {{ formatMoney(acctOstForDate(account.Acct, currentDate)) }}
+			span {{ formatMoney(acctOstForDate(account.Acct)) }}
 			span.text--secondary.ml-1 {{ moneyUnits }}
 		b-col.text-right(cols="auto")
 			.item-btn-slot
@@ -39,6 +39,9 @@ export default class AccountItem extends Vue {
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
-	acctOstForDate = AccountsMgr.acctOstForDate;
+
+	acctOstForDate(acct: string): number {
+		return AccountsMgr.acctOstForDate(acct, this.currentDate);
+	}
 }
 </script>

@@ -109,12 +109,12 @@ export default class Accounts extends Vue {
 	}
 
 	get accounts(): TAccount[] {
-		return AccountsMgr.getAccounts();
+		return AccountsMgr.accounts;
 	}
 
 	get opEntriesForAccount(): TOpEntry[] {
 		if (!this.activeAccount) return [];
-		return OpEntriesMgr.getOpEntriesForAccount(this.activeAccount?.Acct);
+		return OpEntriesMgr.getOpEntriesForAccount(this.activeAccount.Acct);
 	}
 
 	addAccount(): void {

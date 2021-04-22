@@ -1,14 +1,15 @@
 import MainContext from '@/helpers/MainContext';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TOpDate } from '@/blogic/entities/OpDate';
+import { orderBy } from 'lodash';
 
 class OpDatesMgr {
-	public getOpDates(): TOpDate[] {
-		return MainContext.$store.getters.opDates;
+	public get opDates(): TOpDate[] {
+		return orderBy(MainContext.$store.state.opDates,  ['OpDate'], ['desc']);
 	}
 	public get lastDate(): string {
-		if (MainContext.$store.getters.opDates.length === 0) return '';
-		return MainContext.$store.getters.opDates[0].OpDate;
+		if (this.opDates.length === 0) return '';
+		return this.opDates[0].OpDate;
 	}
 	public createOpDate(opDate: TOpDate): Promise<void> {
 		return MainContext.$store.dispatch('createOpDate', opDate);
