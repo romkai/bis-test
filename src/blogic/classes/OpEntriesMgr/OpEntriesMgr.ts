@@ -1,10 +1,10 @@
-import { sortBy } from 'lodash';
+import { orderBy, sortBy } from 'lodash';
 import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 
 class OpEntriesMgr {
 	public get opEntries(): TOpEntry[] {
-		return sortBy(store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
+		return orderBy(store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
 	}
 	public getOpEntriesForAccount(acct: string): TOpEntry[] {
 		return this.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
