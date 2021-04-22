@@ -13,13 +13,13 @@ class OpEntriesMgr {
 		return sortBy(MainContext.$store.getters.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('createOperation', opEntry);
+		return MainContext.$store.dispatch('createOpEntry', opEntry);
 	}
 	public updateOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('updateOperation', opEntry);
+		return MainContext.$store.dispatch('updateOpEntry', opEntry);
 	}
 	public deleteOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('deleteOperation', opEntry);
+		return MainContext.$store.dispatch('deleteOpEntry', opEntry);
 	}
 }
 

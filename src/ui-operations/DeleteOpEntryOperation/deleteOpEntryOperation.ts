@@ -8,6 +8,6 @@ export default function(opEntry: TOpEntry): Promise<void> {
 		title: 'Удаление операции',
 		text: 'Вы действительно хотите удалить эту операцию?',
 	})
-		.then(() => MainContext.$store.dispatch('deleteOperation', opEntry))
+		.then(() => MainContext.$store.dispatch('deleteOpEntry', opEntry))
 		.catch(nothingToDo);
 }
