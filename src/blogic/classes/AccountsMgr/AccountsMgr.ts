@@ -1,4 +1,4 @@
-import MainContext from '@/helpers/MainContext';
+import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
 import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
@@ -6,7 +6,7 @@ import { sortBy } from 'lodash';
 
 class AccountsMgr {
 	public get accounts(): TAccount[] {
-		return sortBy(MainContext.$store.state.accounts, 'Acct')
+		return sortBy(store.state.accounts, 'Acct')
 	}
 	public acctOstForDate(acct: string, date: string): number {
 		const account = this.accounts.find((item: TAccount) => item.Acct === acct);
@@ -21,16 +21,16 @@ class AccountsMgr {
 		return initialAmount + periodAmount;
 	}
 	public accountExists(acct: string): boolean {
-		return Boolean(MainContext.$store.state.accounts.find((acc: TAccount) => acc.Acct === acct));
+		return Boolean(store.state.accounts.find((acc: TAccount) => acc.Acct === acct));
 	}
 	public createAccount(account: TAccount): Promise<void> {
-		return MainContext.$store.dispatch('createAccount', account);
+		return store.dispatch('createAccount', account);
 	}
 	public updateAccount(account: TAccount): Promise<void> {
-		return MainContext.$store.dispatch('updateAccount', account);
+		return store.dispatch('updateAccount', account);
 	}
 	public deleteAccount(account: TAccount): Promise<void> {
-		return MainContext.$store.dispatch('deleteAccount', account);
+		return store.dispatch('deleteAccount', account);
 	}
 }
 

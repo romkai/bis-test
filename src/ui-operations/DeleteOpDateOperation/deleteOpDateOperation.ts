@@ -1,5 +1,5 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
-import MainContext from '@/helpers/MainContext';
+import store from '@/store/index';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import nothingToDo from '@/ui-operations/nothingToDo';
 
@@ -8,6 +8,6 @@ export default function(opDate: TOpDate): Promise<void> {
 		title: 'Удаление опер.дня',
 		text: 'Вы действительно хотите удалить этот опер.день?',
 	})
-		.then(() => MainContext.$store.dispatch('deleteOpDate', opDate))
+		.then(() => store.dispatch('deleteOpDate', opDate))
 		.catch(nothingToDo);
 }

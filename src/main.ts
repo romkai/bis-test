@@ -6,7 +6,6 @@ import { BootstrapVue, BootstrapVueIcons, LayoutPlugin } from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import MainContext from '@/helpers/MainContext';
 
 import './assets/style/main.scss'
 
@@ -15,8 +14,6 @@ Vue.use(BootstrapVueIcons)
 Vue.use(LayoutPlugin, { breakpoints: ['xs', 'sm', 'lg', 'xl', 'xxl'] })
 
 Vue.config.productionTip = false
-
-MainContext.setup(store);
 
 new Vue({
 	router,

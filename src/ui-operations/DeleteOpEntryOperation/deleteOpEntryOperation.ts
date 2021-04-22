@@ -1,6 +1,6 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
-import MainContext from '@/helpers/MainContext';
+import store from '@/store/index';
 import nothingToDo from '@/ui-operations/nothingToDo';
 
 export default function(opEntry: TOpEntry): Promise<void> {
@@ -8,6 +8,6 @@ export default function(opEntry: TOpEntry): Promise<void> {
 		title: 'Удаление операции',
 		text: 'Вы действительно хотите удалить эту операцию?',
 	})
-		.then(() => MainContext.$store.dispatch('deleteOpEntry', opEntry))
+		.then(() => store.dispatch('deleteOpEntry', opEntry))
 		.catch(nothingToDo);
 }

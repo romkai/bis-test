@@ -65,7 +65,6 @@ import {
 	TEditOpEntryOperationResult,
 	isOpEntryEditing,
 } from '@/ui-operations/AddOrEditOpEntryOperation/types/AddOrEditOpEntryTypes';
-import MainContext from '@/helpers/MainContext';
 import { TAccount } from '@/blogic/entities/Account';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
@@ -79,7 +78,6 @@ export default class OpEntryDialog extends Vue {
 	@Prop() cancelOperation!: () => void;
 
 	show = true;
-	store = MainContext.$store;
 
 	accounts = AccountsMgr.accounts.map((acc: TAccount) => ({ value: acc.Acct, text: acc.Acct }));
 	opDates = OpDatesMgr.opDates.map((dt: TOpDate) => ({ value: dt.OpDate, text: dt.OpDate }));

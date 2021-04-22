@@ -1,10 +1,10 @@
 import { sortBy } from 'lodash';
-import MainContext from '@/helpers/MainContext';
+import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 
 class OpEntriesMgr {
 	public get opEntries(): TOpEntry[] {
-		return sortBy(MainContext.$store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
+		return sortBy(store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
 	}
 	public getOpEntriesForAccount(acct: string): TOpEntry[] {
 		return this.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
@@ -13,13 +13,13 @@ class OpEntriesMgr {
 		return sortBy(this.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('createOpEntry', opEntry);
+		return store.dispatch('createOpEntry', opEntry);
 	}
 	public updateOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('updateOpEntry', opEntry);
+		return store.dispatch('updateOpEntry', opEntry);
 	}
 	public deleteOpEntry(opEntry: TOpEntry): Promise<void> {
-		return MainContext.$store.dispatch('deleteOpEntry', opEntry);
+		return store.dispatch('deleteOpEntry', opEntry);
 	}
 }
 
