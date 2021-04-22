@@ -23,7 +23,7 @@
 
 		template(#defaultLeft)
 			OpEntryItem(
-				v-for="(opEntry, index) in operations"
+				v-for="(opEntry, index) in opEntries"
 				:key="index"
 				:opEntry="opEntry"
 				@click="activeOpEntry=opEntry"
@@ -54,12 +54,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
 import PageTemplate from '@/components/template/page/PageTemplate.vue';
-import OpEntryInfo from '@/views/operations/components/OpEntryInfo.vue';
+import OpEntryInfo from '@/views/op-entries/components/OpEntryInfo.vue';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
-import OperationsMgr from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
 
 @Component({
 	components: {
@@ -68,18 +68,18 @@ import OperationsMgr from '@/blogic/classes/OperationsMgr/OperationsMgr';
 		OpEntryItem,
 	},
 })
-export default class Operations extends Vue {
+export default class OpEntries extends Vue {
 	activeOpEntry: TOpEntry|null = null;
 	isEqual = isEqual;
 
 	created(): void {
-		if (this.operations.length) {
-			this.activeOpEntry = this.operations[0];
+		if (this.opEntries.length) {
+			this.activeOpEntry = this.opEntries[0];
 		}
 	}
 
-	get operations(): TOpEntry[] {
-		return OperationsMgr.getOperations();
+	get opEntries(): TOpEntry[] {
+		return OpEntriesMgr.getOpEntries();
 	}
 
 	addOpEntry(): void {

@@ -2,15 +2,15 @@ import { sortBy } from 'lodash';
 import MainContext from '@/helpers/MainContext';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 
-class OperationsMgr {
-	public getOperations(): TOpEntry[] {
-		return MainContext.$store.getters.operations;
+class OpEntriesMgr {
+	public getOpEntries(): TOpEntry[] {
+		return MainContext.$store.getters.opEntries;
 	}
-	public getOperationsForAccount(acct: string): TOpEntry[] {
-		return MainContext.$store.getters.operations.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
+	public getOpEntriesForAccount(acct: string): TOpEntry[] {
+		return MainContext.$store.getters.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
 	}
-	public getOperationsForDate(dt: string): TOpEntry[] {
-		return sortBy(MainContext.$store.getters.operations.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
+	public getOpEntriesForDate(dt: string): TOpEntry[] {
+		return sortBy(MainContext.$store.getters.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
 		return MainContext.$store.dispatch('createOperation', opEntry);
@@ -23,5 +23,5 @@ class OperationsMgr {
 	}
 }
 
-export default new OperationsMgr();
+export default new OpEntriesMgr();
 

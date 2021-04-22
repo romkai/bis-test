@@ -18,7 +18,6 @@ Vue.config.productionTip = false
 
 MainContext.setup(store);
 
-
 new Vue({
 	router,
 	store,

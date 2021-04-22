@@ -6,16 +6,16 @@ import { TAccount } from '@/blogic/entities/Account';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import accountsData from '@/store/json/acct.json';
 import opDatesData from '@/store/json/opdate.json';
-import operationsData from '@/store/json/doc.json';
+import opEntriesData from '@/store/json/doc.json';
 import timeoutPromise from '@/helpers/timeoutPromise';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		operations: operationsData.Doc.map((op, index) => ({ ...op, Id: index+1 })) as TOpEntry[], // Нужно ключевое поле для операций
+		opEntries: opEntriesData.Doc.map((op, index) => ({ ...op, Id: index+1 })) as TOpEntry[], // Нужно ключевое поле для операций
 		accounts: accountsData.AcctAcct as TAccount[],
-		operatingDates: opDatesData.OpDate as TOpDate[],
+		opDates: opDatesData.OpDate as TOpDate[],
 	},
 
 	mutations: {
@@ -34,40 +34,40 @@ export default new Vuex.Store({
 			if (index === -1) return;
 			state.accounts.splice(index, 1);
 			// Удалим связанные записи из операций
-			state.operations = state.operations.filter(op => op.AcctDB !== account.Acct && op.AcctCr !== account.Acct);
+			state.opEntries = state.opEntries.filter(op => op.AcctDB !== account.Acct && op.AcctCr !== account.Acct);
 		},
 
-		// Operating Dates
-		CREATE_OPERATING_DATE(state, opDate: TOpDate) {
-			state.operatingDates.push(opDate);
+		// OpDates
+		CREATE_OP_DATE(state, opDate: TOpDate) {
+			state.opDates.push(opDate);
 		},
-		UPDATE_OPERATING_DATE(state, opDate: TOpDate) {
-			const index = state.operatingDates.findIndex(item => item.OpDate === opDate.OpDate);
+		UPDATE_OP_DATE(state, opDate: TOpDate) {
+			const index = state.opDates.findIndex(item => item.OpDate === opDate.OpDate);
 			if (index === -1) return;
-			state.operatingDates.splice(index, 1, opDate);
+			state.opDates.splice(index, 1, opDate);
 		},
-		DELETE_OPERATING_DATE(state, opDate: TOpDate) {
-			const index = state.operatingDates.findIndex(item => item.OpDate === opDate.OpDate);
+		DELETE_OP_DATE(state, opDate: TOpDate) {
+			const index = state.opDates.findIndex(item => item.OpDate === opDate.OpDate);
 			if (index === -1) return;
-			state.operatingDates.splice(index, 1);
+			state.opDates.splice(index, 1);
 			// Удалим связанные записи из операций
-			state.operations = state.operations.filter(op => op.OpDate !== opDate.OpDate);
+			state.opEntries = state.opEntries.filter(op => op.OpDate !== opDate.OpDate);
 		},
 
-		// Operations
-		CREATE_OPERATION(state, op: TOpEntry) {
-			op.Id = state.operations.reduce((max, op) => Math.max(max, op.Id), 0) + 1;
-			state.operations.push(op);
+		// OpEntries
+		CREATE_OP_ENTRY(state, op: TOpEntry) {
+			op.Id = state.opEntries.reduce((max, op) => Math.max(max, op.Id), 0) + 1;
+			state.opEntries.push(op);
 		},
-		UPDATE_OPERATION(state, op: TOpEntry) {
-			const index = state.operations.findIndex(item => item.Id === op.Id);
+		UPDATE_OP_ENTRY(state, op: TOpEntry) {
+			const index = state.opEntries.findIndex(item => item.Id === op.Id);
 			if (index === -1) return;
-			state.operations.splice(index, 1, op);
+			state.opEntries.splice(index, 1, op);
 		},
-		DELETE_OPERATION(state, op: TOpEntry) {
-			const index = state.operations.findIndex(item => item.Id === op.Id);
+		DELETE_OP_ENTRY(state, op: TOpEntry) {
+			const index = state.opEntries.findIndex(item => item.Id === op.Id);
 			if (index === -1) return;
-			state.operations.splice(index, 1);
+			state.opEntries.splice(index, 1);
 		},
 	},
 
@@ -85,26 +85,26 @@ export default new Vuex.Store({
 			return timeoutPromise().then(() => context.commit('DELETE_ACCOUNT', account));
 		},
 
-		// Operations
-		createOperation(context, op: TOpEntry) {
-			return context.commit('CREATE_OPERATION', op);
+		// OpEntries
+		createOpEntry(context, op: TOpEntry) {
+			return context.commit('CREATE_OP_ENTRY', op);
 		},
-		updateOperation(context, op: TOpEntry) {
-			return context.commit('UPDATE_OPERATION', op);
+		updateOpEntry(context, op: TOpEntry) {
+			return context.commit('UPDATE_OP_ENTRY', op);
 		},
-		deleteOperation(context, op: TOpEntry) {
-			return context.commit('DELETE_OPERATION', op);
+		deleteOpEntry(context, op: TOpEntry) {
+			return context.commit('DELETE_OP_ENTRY', op);
 		},
 
-		// Operating Dates
-		createOperatingDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('CREATE_OPERATING_DATE', opDate));
+		// OpDates
+		createOpDate(context, opDate: TOpDate) {
+			return timeoutPromise().then(() => context.commit('CREATE_OP_DATE', opDate));
 		},
-		updateOperatingDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('UPDATE_OPERATING_DATE', opDate));
+		updateOpDate(context, opDate: TOpDate) {
+			return timeoutPromise().then(() => context.commit('UPDATE_OP_DATE', opDate));
 		},
-		deleteOperatingDate(context, opDate: TOpDate) {
-			return timeoutPromise().then(() => context.commit('DELETE_OPERATING_DATE', opDate));
+		deleteOpDate(context, opDate: TOpDate) {
+			return timeoutPromise().then(() => context.commit('DELETE_OP_DATE', opDate));
 		},
 	},
 
@@ -112,8 +112,8 @@ export default new Vuex.Store({
 
 		// Отсортированные данные
 		accounts: (state): TAccount[] => sortBy(state.accounts, 'Acct'),
-		operations: (state): TOpEntry[] => sortBy(state.operations, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']),
-		operatingDates: (state): TOpDate[] => orderBy(state.operatingDates,  ['OpDate'], ['desc']),
+		opEntries: (state): TOpEntry[] => sortBy(state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']),
+		opDates: (state): TOpDate[] => orderBy(state.opDates,  ['OpDate'], ['desc']),
 
 	},
 

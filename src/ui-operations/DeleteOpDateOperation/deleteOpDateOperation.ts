@@ -8,6 +8,6 @@ export default function(opDate: TOpDate): Promise<void> {
 		title: 'Удаление опер.дня',
 		text: 'Вы действительно хотите удалить этот опер.день?',
 	})
-		.then(() => MainContext.$store.dispatch('deleteOperatingDate', opDate))
+		.then(() => MainContext.$store.dispatch('deleteOpDate', opDate))
 		.catch(nothingToDo);
 }

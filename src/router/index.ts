@@ -15,14 +15,14 @@ const routes: Array<RouteConfig> = [
 		component: () => import('@/views/accounts/Accounts.vue')
 	},
 	{
-		path: '/operating-dates',
-		name: 'operating-dates',
-		component: () => import('@/views/operating-dates/OperatingDates.vue')
+		path: '/op-dates',
+		name: 'op-dates',
+		component: () => import('@/views/op-dates/OpDates.vue')
 	},
 	{
-		path: '/operations',
-		name: 'operations',
-		component: () => import('@/views/operations/Operations.vue')
+		path: '/op-entries',
+		name: 'op-entries',
+		component: () => import('@/views/op-entries/OpEntries.vue')
 	},
 ]
 

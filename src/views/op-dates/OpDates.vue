@@ -51,11 +51,11 @@
 
 		template(#defaultRight)
 			.my-3.text-center(
-				v-if="operationsForDate.length===0"
+				v-if="opEntriesForDate.length===0"
 			) Операций не найдено за этот день
 
 			OpEntryItem(
-				v-for="(opEntry, index) in operationsForDate"
+				v-for="(opEntry, index) in opEntriesForDate"
 				:key="index"
 				:opEntry="opEntry"
 				@editOpEntry="editOpEntry(opEntry)"
@@ -71,7 +71,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import PageTemplate from '@/components/template/page/PageTemplate.vue';
-import OpDateItem from '@/views/operating-dates/components/OpDateItem.vue';
+import OpDateItem from '@/views/op-dates/components/OpDateItem.vue';
 import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
@@ -80,13 +80,13 @@ import deleteOpDateOperation from '@/ui-operations/DeleteOpDateOperation/deleteO
 import editOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/editOpDateOperation';
 import addOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/addOpDateOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
-import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
 import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
 @Component({
 	components: { OpEntryItem, OpDateItem, PageTemplate },
 })
-export default class OperatingDates extends Vue {
+export default class OpDates extends Vue {
 	activeOpDate: TOpDate|null = null;
 
 	created(): void {
@@ -99,9 +99,9 @@ export default class OperatingDates extends Vue {
 		return OpDatesMgr.getOpDates();
 	}
 
-	get operationsForDate(): TOpEntry[] {
+	get opEntriesForDate(): TOpEntry[] {
 		if (!this.activeOpDate) return [];
-		return Operations.getOperationsForDate(this.activeOpDate.OpDate);
+		return OpEntriesMgr.getOpEntriesForDate(this.activeOpDate.OpDate);
 	}
 
 	addOpDate(): void {

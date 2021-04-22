@@ -59,11 +59,11 @@
 
 		template(#defaultRight)
 			.my-3.text-center(
-				v-if="operationsForAccount.length===0"
+				v-if="opEntriesForAccount.length===0"
 			) Операций не найдено по этому счету
 
 			OpEntryItem(
-				v-for="(opEntry, index) in operationsForAccount"
+				v-for="(opEntry, index) in opEntriesForAccount"
 				:key="index"
 				:opEntry="opEntry"
 				@editOpEntry="editOpEntry(opEntry)"
@@ -87,7 +87,7 @@ import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
-import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
 import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 
@@ -112,9 +112,9 @@ export default class Accounts extends Vue {
 		return AccountsMgr.getAccounts();
 	}
 
-	get operationsForAccount(): TOpEntry[] {
+	get opEntriesForAccount(): TOpEntry[] {
 		if (!this.activeAccount) return [];
-		return Operations.getOperationsForAccount(this.activeAccount?.Acct);
+		return OpEntriesMgr.getOpEntriesForAccount(this.activeAccount?.Acct);
 	}
 
 	addAccount(): void {

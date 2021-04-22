@@ -1,7 +1,7 @@
 import MainContext from '@/helpers/MainContext';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
-import Operations from '@/blogic/classes/OperationsMgr/OperationsMgr';
+import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
 
 class AccountsMgr {
 	public getAccounts(): TAccount[] {
@@ -11,7 +11,7 @@ class AccountsMgr {
 		const account = MainContext.$store.getters.accounts.find((item: TAccount) => item.Acct === acct);
 		if (!account) return 0.00;
 		const initialAmount = account.Ost;
-		const periodAmount = Operations.getOperationsForAccount(acct)
+		const periodAmount = OpEntriesMgr.getOpEntriesForAccount(acct)
 			.filter((op: TOpEntry) => op.OpDate <= date)
 			.reduce(
 				(acc: number, item: TOpEntry) =>

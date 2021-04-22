@@ -35,8 +35,8 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class Home extends Vue {
 	links = [
 		{ id: 1, to: 'accounts', text: 'Счета' },
-		{ id: 2, to: 'operating-dates', text: 'Операционные дни' },
-		{ id: 3, to: 'operations', text: 'Операции' },
+		{ id: 2, to: 'op-dates', text: 'Операционные дни' },
+		{ id: 3, to: 'op-entries', text: 'Операции' },
 	]
 }
 </script>
