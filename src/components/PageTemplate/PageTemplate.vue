@@ -20,8 +20,7 @@
 							@scroll=""
 						)
 							slot(
-								name="defaultLeft"
-								:pagedItemsLeft="[]"
+								name="left"
 							)
 
 				.page-template__column-footer
@@ -45,8 +44,7 @@
 							@scroll=""
 						)
 							slot(
-								name="defaultRight"
-								:pagedItemsRight="[]"
+								name="right"
 							)
 
 				.page-template__column-footer
@@ -56,10 +54,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { PropType } from 'vue';
 
 @Component
 export default class PageTemplate extends Vue {
-	@Prop({ type: Array, required: true }) title!: [];
+	@Prop({ type: Array as PropType<string[]>, required: true }) title!: string[];
 
 	animatingLeft = false;
 	animatingRight = false;
@@ -89,7 +88,7 @@ export default class PageTemplate extends Vue {
 </script>
 
 <style lang="scss">
-@import "src/assets/style/utils.scss";
+@import "../../assets/style/utils";
 
 .page-template__container {
 	height: calc(100vh - 56px);

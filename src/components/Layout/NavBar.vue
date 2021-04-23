@@ -32,7 +32,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Home extends Vue {
+export default class NavBar extends Vue {
 	links = [
 		{ id: 1, to: 'accounts', text: 'Счета' },
 		{ id: 2, to: 'op-dates', text: 'Операционные дни' },

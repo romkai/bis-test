@@ -79,9 +79,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
-import PageTemplate from '@/components/template/page/PageTemplate.vue';
+import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import OpDateItem from '@/views/op-dates/components/OpDateItem.vue';
-import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
+import OpEntryItem from '@/components/OpEntryList/OpEntryItem.vue';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';

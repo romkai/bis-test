@@ -1,6 +1,6 @@
 <template lang="pug">
 	#app
-		Navbar
+		NavBar
 		main
 			router-view
 
@@ -9,16 +9,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-// Components
-import Navbar from '@/components/layout/Navbar.vue';
+import NavBar from '@/components/Layout/NavBar.vue';
 
 @Component({
 	components: {
-		Navbar,
+		NavBar,
 	}
 })
 export default class App extends Vue {
-
 }
 </script>
 

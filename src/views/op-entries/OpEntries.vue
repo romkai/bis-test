@@ -1,104 +1,39 @@
 <template lang="pug">
 	PageTemplate(
-		:title="['Операции по счетам', 'Список проводок']"
+		:title="['Операции по счетам', 'Проводки по счету']"
 	)
-		template(#headerLeft)
-			b-button(
-				@click="addOpEntry"
-				variant="outline-secondary"
-			)
-				b-icon-plus-circle-fill.mr-2(
-					variant="info"
-					shift-v="-1"
-				)
-				span Добавить операцию
-
-		template(#mainTopLeft)
-			b-row.text-subtitle.text--secondary
-				b-col(cols="3") Дата опер.дня
-				b-col(cols="4") Счет Дебета / Кредита
-				b-col.text-right() Сумма
-				b-col(cols="auto")
-					.item-btn-slot
-
-		template(#defaultLeft)
-			OpEntryItem(
-				v-for="(opEntry, index) in opEntries"
-				:key="index"
-				:opEntry="opEntry"
-				@click="activeOpEntry=opEntry"
-				:active="!!activeOpEntry && opEntry.Id===activeOpEntry.Id"
-				@editOpEntry="editOpEntry(opEntry)"
-				@deleteOpEntry="deleteOpEntry(opEntry)"
-				hover
-				activeItem
+		template(#left)
+			OpEntryList(
+				:mode="TOpEntryListMode.ALL"
+				@setActiveOpEntry="activeOpEntry=$event"
 			)
 
-		template(#headerRight)
-
-		template(#mainTopRight)
-			b-row.text-subtitle.text--secondary
-				b-col() Номер счета
-				b-col.text-right(cols="auto") Остаток
-
-		template(#defaultRight)
-			.my-3.text-center(
-				v-if="!activeOpEntry"
-			) Выберите операцию в списке слева
-
+		template(#right)
 			OpEntryInfo(
-				v-else
+				v-if="!!activeOpEntry"
 				:opEntry="activeOpEntry"
 			)
+
 </template>
 
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
-import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
-import PageTemplate from '@/components/template/page/PageTemplate.vue';
-import OpEntryInfo from '@/views/op-entries/components/OpEntryInfo.vue';
-import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
-import nothingToDo from '@/ui-operations/nothingToDo';
-import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
-import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
-import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
+import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
+import OpEntryInfo from '@/components/OpEntryInfo/OpEntryInfo.vue';
+import OpEntryList from '@/components/OpEntryList/OpEntryList.vue';
+import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
 
 @Component({
 	components: {
+		OpEntryList,
 		OpEntryInfo,
 		PageTemplate,
-		OpEntryItem,
 	},
 })
 export default class OpEntries extends Vue {
 	activeOpEntry: TOpEntry|null = null;
-
-	created(): void {
-		if (this.opEntries.length) {
-			this.activeOpEntry = this.opEntries[0];
-		}
-	}
-
-	get opEntries(): TOpEntry[] {
-		return OpEntriesMgr.getOpEntries();
-	}
-
-	addOpEntry(): void {
-		addOpEntryOperation().then().catch(nothingToDo);
-	}
-
-	editOpEntry(opEntry: TOpEntry): void {
-		editOpEntryOperation({ opEntry }).then().catch(nothingToDo);
-	}
-
-	deleteOpEntry(opEntry: TOpEntry): void {
-		deleteOpEntryOperation(opEntry).then(() => {
-			if (opEntry.Id === this.activeOpEntry?.Id) {
-				this.activeOpEntry = null;
-			}
-		}).catch(nothingToDo);
-	}
+	TOpEntryListMode = TOpEntryListMode;
 }
 </script>

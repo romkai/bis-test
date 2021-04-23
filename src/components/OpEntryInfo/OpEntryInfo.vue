@@ -1,6 +1,16 @@
 <template lang="pug">
 	div
-		b-row.item-wrapper.text-body
+		b-row.text-subtitle.text--secondary
+			b-col() Номер счета
+			b-col.text-right(cols="auto") Остаток
+
+		.my-3.text-center(
+			v-if="!opEntry"
+		) Выберите операцию
+
+		b-row.item-wrapper.text-body(
+			v-else
+		)
 			b-col(cols="6") {{ opEntry.AcctDB }}
 			b-col.text-right(cols="6")
 				span {{ formatMoney(ostDb) }}
