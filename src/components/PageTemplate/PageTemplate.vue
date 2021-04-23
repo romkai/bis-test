@@ -2,16 +2,7 @@
 	.page-template__container
 		.page-template__wrapper
 			.page-template__column
-				.page-template__column-header
-					.page-template__header-title
-						h5.mb-0 {{ title[0] }}
-					.page-template__header-action(v-if="$scopedSlots['headerLeft']")
-						slot(name="headerLeft")
-
 				.page-template__column-main
-					.page-template__main-top(v-if="$scopedSlots['mainTopLeft']")
-						slot(name="mainTopLeft")
-
 					.page-template__content(
 						:class="{ 'transition': animatingLeft }"
 					)
@@ -19,23 +10,11 @@
 							ref="scrollAreaLeft"
 							@scroll=""
 						)
-							slot(
-								name="left"
-							)
-
+							slot(name="left")
 				.page-template__column-footer
 
 			.page-template__column
-				.page-template__column-header
-					.page-template__header-title
-						h5.mb-0 {{ title[1] }}
-					.page-template__header-action(v-if="$scopedSlots['headerRight']")
-						slot(name="headerRight")
-
 				.page-template__column-main
-					.page-template__main-top(v-if="$scopedSlots['mainTopRight']")
-						slot(name="mainTopRight")
-
 					.page-template__content(
 						:class="{ 'transition': animatingRight }"
 					)
@@ -43,47 +22,18 @@
 							ref="scrollAreaRight"
 							@scroll=""
 						)
-							slot(
-								name="right"
-							)
-
+							slot(name="right")
 				.page-template__column-footer
-
 
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { PropType } from 'vue';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class PageTemplate extends Vue {
-	@Prop({ type: Array as PropType<string[]>, required: true }) title!: string[];
-
 	animatingLeft = false;
 	animatingRight = false;
-
-	// showTransition() {
-	// 	this.animating = true;
-	// 	setTimeout(() => {
-	// 		this.animating = false;
-	// 	}, 100);
-	// }
-	//
-	// @Ref('scrollArea')
-	// scrollArea: HTMLElement | undefined = undefined;
-	//
-	// scrollTop() {
-	// 	if (!this.scrollArea) return;
-	// 	(this.scrollArea as any).scrollTop = 0;
-	// }
-	//
-	// onScrollLeft = throttle(this.rawOnScroll, 300);
-	//
-	// rawOnScroll(event: any) {
-	// 	this.btnTop = event.target.scrollTop > 100;
-	// }
-
 }
 </script>
 

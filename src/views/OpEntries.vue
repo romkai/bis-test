@@ -1,11 +1,10 @@
 <template lang="pug">
-	PageTemplate(
-		:title="['Операции по счетам', 'Проводки по счету']"
-	)
+	PageTemplate
+
 		template(#left)
 			OpEntryList(
-				:mode="TOpEntryListMode.ALL"
 				@setActiveOpEntry="activeOpEntry=$event"
+				hover
 			)
 
 		template(#right)
@@ -23,7 +22,6 @@ import { TOpEntry } from '@/blogic/entities/OpEntry';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import OpEntryInfo from '@/components/OpEntryInfo/OpEntryInfo.vue';
 import OpEntryList from '@/components/OpEntryList/OpEntryList.vue';
-import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
 
 @Component({
 	components: {
@@ -34,6 +32,5 @@ import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListType
 })
 export default class OpEntries extends Vue {
 	activeOpEntry: TOpEntry|null = null;
-	TOpEntryListMode = TOpEntryListMode;
 }
 </script>

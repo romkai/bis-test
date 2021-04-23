@@ -1,5 +1,7 @@
 <template lang="pug">
 	div
+		h5.mb-0 {{ title }}
+
 		b-form-datepicker.mr-2(
 			v-model="currentDate"
 			style="width: 270px"
@@ -7,6 +9,7 @@
 		)
 
 		b-button(
+			v-if="checkCRUD(crud, 'C')"
 			@click="addAccount"
 			variant="outline-secondary"
 		)
@@ -31,12 +34,14 @@
 			:active="!!activeAccount && account.Acct===activeAccount.Acct"
 			@editAccount="editAccount(account)"
 			@deleteAccount="deleteAccount(account)"
+			:hover="hover"
+			:crud="crud"
 		)
 
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { TAccount } from '@/blogic/entities/Account';
 import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
@@ -45,6 +50,7 @@ import nothingToDo from '@/ui-operations/nothingToDo';
 import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/editAccountOperation';
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import AccountItem from '@/components/AccountList/AccountItem.vue';
+import checkCRUD from '@/helpers/permissions';
 
 @Component({
 	components: {
@@ -52,11 +58,16 @@ import AccountItem from '@/components/AccountList/AccountItem.vue';
 	},
 })
 export default class AccountList extends Vue {
+	@Prop({ type: String, default: 'Банковские счета' }) title!: string;
+	@Prop({ type: Boolean, default: false }) hover!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) crud!: string;
+
 	activeAccount: TAccount|null = null;
-	currentDate = OpDatesMgr.lastDate;
+	currentDate = OpDatesMgr.getLastDate();
+	checkCRUD = checkCRUD;
 
 	get accounts(): TAccount[] {
-		return AccountsMgr.accounts;
+		return AccountsMgr.getAccounts();
 	}
 
 	@Watch('activeAccount')

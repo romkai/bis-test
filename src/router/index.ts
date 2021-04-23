@@ -12,17 +12,17 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/accounts',
 		name: 'accounts',
-		component: () => import('@/views/accounts/Accounts.vue')
+		component: () => import('@/views/Accounts.vue')
 	},
 	{
 		path: '/op-dates',
 		name: 'op-dates',
-		component: () => import('@/views/op-dates/OpDates.vue')
+		component: () => import('@/views/OpDates.vue')
 	},
 	{
 		path: '/op-entries',
 		name: 'op-entries',
-		component: () => import('@/views/op-entries/OpEntries.vue')
+		component: () => import('@/views/OpEntries.vue')
 	},
 ]
 

@@ -1,7 +1,7 @@
 <template lang="pug">
 	b-row.item-wrapper.text-body.item-wrapper-active.block-hover(
 		@click="$emit('click')"
-		:class="{ 'active-item': active }"
+		:class="{ 'active-item': active, 'block-hover': hover, 'item-wrapper-active': hover }"
 	)
 		b-col(cols="5") {{ account.Acct }}
 		b-col.text-right()
@@ -10,6 +10,7 @@
 		b-col.text-right(cols="auto")
 			.item-btn-slot
 				b-button.mr-1(
+					v-if="checkCRUD(crud, 'U')"
 					variant="outline-info"
 					@click.stop="$emit('editAccount')"
 					size="sm"
@@ -17,6 +18,7 @@
 					b-icon(icon="pencil-square")
 
 				b-button.trash-icon-hover(
+					v-if="checkCRUD(crud, 'D')"
 					variant="outline-secondary"
 					@click.stop="$emit('deleteAccount')"
 					size="sm"
@@ -26,19 +28,24 @@
 </template>
 
 <script lang="ts">
+
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import { TAccount } from '@/blogic/entities/Account';
 import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
+import checkCRUD from '@/helpers/permissions';
 
 @Component
 export default class AccountItem extends Vue {
 	@Prop({ type: Object, required: true }) account!: TAccount;
 	@Prop({ type: String, required: true }) currentDate!: string;
 	@Prop({ type: Boolean, required: true }) active!: boolean;
+	@Prop({ type: Boolean, default: false }) hover!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) crud!: string;
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
+	checkCRUD = checkCRUD;
 
 	acctOstForDate(acct: string): number {
 		return AccountsMgr.acctOstForDate(acct, this.currentDate);

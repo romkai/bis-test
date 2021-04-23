@@ -79,8 +79,8 @@ export default class OpEntryDialog extends Vue {
 
 	show = true;
 
-	accounts = AccountsMgr.accounts.map((acc: TAccount) => ({ value: acc.Acct, text: acc.Acct }));
-	opDates = OpDatesMgr.opDates.map((dt: TOpDate) => ({ value: dt.OpDate, text: dt.OpDate }));
+	accounts = AccountsMgr.getAccounts().map((acc: TAccount) => ({ value: acc.Acct, text: acc.Acct }));
+	opDates = OpDatesMgr.getOpDates().map((dt: TOpDate) => ({ value: dt.OpDate, text: dt.OpDate }));
 
 	get isOpEntryEditing(): boolean {
 		return isOpEntryEditing(this.operationInput);

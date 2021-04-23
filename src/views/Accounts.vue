@@ -1,16 +1,18 @@
 <template lang="pug">
-	PageTemplate(
-		:title="['Банковские счета', 'Операции по счету']"
-	)
+	PageTemplate
+
 		template(#left)
 			AccountList(
+				title="Банковские счета"
 				@setActiveAccount="activeAccount=$event"
+				hover
 			)
 
 		template(#right)
 			OpEntryList(
-				:mode="mode"
-				:currentAccount="activeAccount"
+				title="Операции по счету"
+				:mode="TOpEntryListMode.FOR_ACCOUNT"
+				:current="activeAccount"
 			)
 
 </template>
@@ -33,12 +35,12 @@ import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListType
 })
 export default class Accounts extends Vue {
 	activeAccount: TAccount|null = null;
-	mode = TOpEntryListMode.FOR_ACCOUNT;
+	TOpEntryListMode = TOpEntryListMode
 }
 </script>
 
 <style lang="scss">
-@import "../../assets/style/utils";
+@import "../assets/style/utils";
 
 
 </style>

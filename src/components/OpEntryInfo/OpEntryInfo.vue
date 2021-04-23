@@ -1,5 +1,7 @@
 <template lang="pug">
 	div
+		h5.mb-0 {{ title }}
+
 		b-row.text-subtitle.text--secondary
 			b-col() Номер счета
 			b-col.text-right(cols="auto") Остаток
@@ -33,10 +35,12 @@ import { PropType } from 'vue';
 
 @Component
 export default class OpEntryInfo extends Vue {
+	@Prop({ type: String, default: 'Список проводок' }) title!: string;
 	@Prop({ type: Object as PropType<TOpEntry>, required: true }) opEntry!: TOpEntry;
 
+	lastDate = OpDatesMgr.getLastDate();
+
 	moneyUnits = moneyUnits;
-	lastDate = OpDatesMgr.lastDate;
 	formatMoney = formatMoney;
 
 	get ostDb(): number {

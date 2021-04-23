@@ -1,6 +1,9 @@
 <template lang="pug">
 	div
+		h5.mb-0 {{ title }}
+
 		b-button(
+			v-if="checkCRUD(crud, 'C')"
 			@click="addOpEntry"
 			variant="outline-secondary"
 		)
@@ -18,12 +21,12 @@
 				.item-btn-slot
 
 		.my-3.text-center(
-			v-if="mode===TOpEntryListMode.FOR_ACCOUNT && !this.currentAccount"
-		) Выберите счет в списке слева
+			v-if="requiredAccountOrOpDate"
+		) Не указан родительский элемент
 
 		.my-3.text-center(
 			v-else-if="opEntries.length===0"
-		) Операций не найдено по этому счету
+		) Операции не найдены
 
 		OpEntryItem(
 			v-else
@@ -35,7 +38,8 @@
 			@editOpEntry="editOpEntry(opEntry)"
 			@deleteOpEntry="deleteOpEntry(opEntry)"
 			activeItem
-			hover
+			:hover="hover"
+			:crud="crud"
 		)
 
 </template>
@@ -50,8 +54,10 @@ import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/edit
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
 import OpEntryItem from '@/components/OpEntryList/OpEntryItem.vue';
 import { PropType } from 'vue';
-import { TAccount } from '@/blogic/entities/Account';
+import { isAccount, TAccount } from '@/blogic/entities/Account';
 import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
+import { TOpDate, isOpDate } from '@/blogic/entities/OpDate';
+import checkCRUD from '@/helpers/permissions';
 
 @Component({
 	components: {
@@ -59,11 +65,14 @@ import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListType
 	},
 })
 export default class OpEntryList extends Vue {
+	@Prop({ type: String, default: 'Операции по счетам' }) title!: string;
 	@Prop({ type: Number, default: TOpEntryListMode.ALL }) mode!: TOpEntryListMode;
-	@Prop({ type: Object as PropType<TAccount> }) currentAccount!: TAccount;
+	@Prop({ type: Object as PropType<TAccount|TOpDate> }) current!: TAccount|TOpDate;
+	@Prop({ type: Boolean, default: false }) hover!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) crud!: string;
 
 	activeOpEntry: TOpEntry|null = null;
-	TOpEntryListMode = TOpEntryListMode;
+	checkCRUD = checkCRUD;
 
 	@Watch('activeOpEntry')
 	onActiveOpEntryChange(): void {
@@ -79,12 +88,22 @@ export default class OpEntryList extends Vue {
 		this.activeOpEntry = this.opEntries[0];
 	}
 
+	get requiredAccountOrOpDate(): boolean {
+		return !this.current && this.mode !== TOpEntryListMode.ALL;
+	}
+
 	get opEntries(): TOpEntry[] {
-		if (this.mode === TOpEntryListMode.FOR_ACCOUNT) {
-			if (!this.currentAccount) return [];
-			return OpEntriesMgr.getOpEntriesForAccount(this.currentAccount.Acct);
+		if (this.mode === TOpEntryListMode.ALL) {
+			return OpEntriesMgr.getOpEntries();
 		}
-		return OpEntriesMgr.getOpEntries();
+		if (!this.current) return [];
+		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && isAccount(this.current)) {
+			return OpEntriesMgr.getOpEntriesForAccount(this.current.Acct);
+		}
+		if (this.mode === TOpEntryListMode.FOR_DATE && isOpDate(this.current)) {
+			return OpEntriesMgr.getOpEntriesForDate(this.current.OpDate);
+		}
+		return [];
 	}
 
 	addOpEntry(): void {
@@ -97,5 +116,7 @@ export default class OpEntryList extends Vue {
 
 	deleteOpEntry(opEntry: TOpEntry): void {
 		deleteOpEntryOperation(opEntry).then().catch(nothingToDo);
-	}}
+	}
+
+}
 </script>
