@@ -32,8 +32,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import { TAccount } from '@/blogic/entities/Account';
-import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 import checkCRUD from '@/helpers/permissions';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 
 @Component
 export default class AccountItem extends Vue {
@@ -48,7 +48,7 @@ export default class AccountItem extends Vue {
 	checkCRUD = checkCRUD;
 
 	acctOstForDate(acct: string): number {
-		return AccountsMgr.acctOstForDate(acct, this.currentDate);
+		return dbo.accountsMgr.acctOstForDate(acct, this.currentDate);
 	}
 }
 </script>

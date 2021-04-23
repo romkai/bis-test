@@ -47,7 +47,7 @@ import {
 	TEditAccountOperationResult,
 	isAccountEditing,
 } from '@/ui-operations/AddOrEditAccountOperation/types/AddOrEditAccountTypes';
-import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 
 @Component
 export default class AccountDialog extends Vue {
@@ -74,7 +74,7 @@ export default class AccountDialog extends Vue {
 
 	get acctNameValid(): boolean {
 		return !!this.DATA.Acct &&
-			(this.isAccountEditing || !AccountsMgr.accountExists(this.DATA.Acct));
+			(this.isAccountEditing || !dbo.accountsMgr.accountExists(this.DATA.Acct));
 	}
 
 	get acctOstValid(): boolean {
@@ -92,10 +92,10 @@ export default class AccountDialog extends Vue {
 	submit(): void {
 		this.DATA.Ost = Number(this.DATA.Ost); // string -> number
 		if (isAccountEditing(this.operationInput)) {
-			AccountsMgr.updateAccount(this.DATA)
+			dbo.accountsMgr.updateAccount(this.DATA)
 				.then(() => this.finishOperation({ account: this.DATA }));
 		} else {
-			AccountsMgr.createAccount(this.DATA)
+			dbo.accountsMgr.createAccount(this.DATA)
 				.then(() => this.finishOperation({ account: this.DATA }));
 		}
 	}

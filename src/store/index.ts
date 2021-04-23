@@ -12,14 +12,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		opEntries: opEntriesData.Doc.map((op, index) => ({ ...op, Id: index+1 })) as TOpEntry[], // Нужно ключевое поле для операций
+		// Нужно ключевое поле для операций
+		opEntries: opEntriesData.Doc.map((op, index) => ({ ...op, Id: index+1 })) as TOpEntry[],
 		accounts: accountsData.AcctAcct as TAccount[],
 		opDates: opDatesData.OpDate as TOpDate[],
 	},
 
 	mutations: {
 
-		// Accounts
 		CREATE_ACCOUNT(state, account: TAccount) {
 			state.accounts.push(account);
 		},
@@ -36,7 +36,6 @@ export default new Vuex.Store({
 			state.opEntries = state.opEntries.filter(op => op.AcctDB !== account.Acct && op.AcctCr !== account.Acct);
 		},
 
-		// OpDates
 		CREATE_OP_DATE(state, opDate: TOpDate) {
 			state.opDates.push(opDate);
 		},
@@ -53,7 +52,6 @@ export default new Vuex.Store({
 			state.opEntries = state.opEntries.filter(op => op.OpDate !== opDate.OpDate);
 		},
 
-		// OpEntries
 		CREATE_OP_ENTRY(state, op: TOpEntry) {
 			op.Id = state.opEntries.reduce((max, op) => Math.max(max, op.Id), 0) + 1;
 			state.opEntries.push(op);
@@ -71,7 +69,6 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-		// Accounts
 		createAccount(context, account: TAccount) {
 			return context.commit('CREATE_ACCOUNT', account);
 		},
@@ -81,7 +78,6 @@ export default new Vuex.Store({
 		deleteAccount(context, account: TAccount) {
 			return context.commit('DELETE_ACCOUNT', account);
 		},
-		// OpEntries
 		createOpEntry(context, op: TOpEntry) {
 			return context.commit('CREATE_OP_ENTRY', op);
 		},
@@ -91,7 +87,6 @@ export default new Vuex.Store({
 		deleteOpEntry(context, op: TOpEntry) {
 			return context.commit('DELETE_OP_ENTRY', op);
 		},
-		// OpDates
 		createOpDate(context, opDate: TOpDate) {
 			return context.commit('CREATE_OP_DATE', opDate);
 		},
@@ -104,7 +99,6 @@ export default new Vuex.Store({
 	},
 
 	getters: {
-		// Отсортированные данные
 		opEntries: (state) => {
 			return orderBy(state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
 		},

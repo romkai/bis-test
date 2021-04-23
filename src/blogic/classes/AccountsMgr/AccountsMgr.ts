@@ -1,7 +1,7 @@
 import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
-import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 import { IAccountsMgr } from '@/blogic/classes/AccountsMgr/types/AccountsMgrTypes';
 
 class AccountsMgr implements IAccountsMgr {
@@ -13,7 +13,7 @@ class AccountsMgr implements IAccountsMgr {
 		const account = store.getters.accounts.find((item: TAccount) => item.Acct === acct);
 		if (!account) return 0.00;
 		const initialAmount = account.Ost;
-		const periodAmount = OpEntriesMgr.getOpEntriesForAccount(acct)
+		const periodAmount = dbo.opEntriesMgr.getOpEntriesForAccount(acct)
 			.filter((op: TOpEntry) => op.OpDate <= date)
 			.reduce(
 				(acc: number, item: TOpEntry) =>

@@ -29,26 +29,25 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
-import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
 import { PropType } from 'vue';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 
 @Component
 export default class OpEntryInfo extends Vue {
 	@Prop({ type: String, default: 'Список проводок' }) title!: string;
 	@Prop({ type: Object as PropType<TOpEntry>, required: true }) opEntry!: TOpEntry;
 
-	lastDate = OpDatesMgr.getLastDate();
+	lastDate = dbo.opDatesMgr.getLastDate();
 
 	moneyUnits = moneyUnits;
 	formatMoney = formatMoney;
 
 	get ostDb(): number {
-		return AccountsMgr.acctOstForDate(this.opEntry.AcctDB, this.lastDate);
+		return dbo.accountsMgr.acctOstForDate(this.opEntry.AcctDB, this.lastDate);
 	}
 
 	get ostCr(): number {
-		return AccountsMgr.acctOstForDate(this.opEntry.AcctCr, this.lastDate);
+		return dbo.accountsMgr.acctOstForDate(this.opEntry.AcctCr, this.lastDate);
 	}
 }
 </script>

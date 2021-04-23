@@ -67,9 +67,7 @@ import {
 } from '@/ui-operations/AddOrEditOpEntryOperation/types/AddOrEditOpEntryTypes';
 import { TAccount } from '@/blogic/entities/Account';
 import { TOpDate } from '@/blogic/entities/OpDate';
-import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
-import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
-import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 
 @Component
 export default class OpEntryDialog extends Vue {
@@ -79,8 +77,8 @@ export default class OpEntryDialog extends Vue {
 
 	show = true;
 
-	accounts = AccountsMgr.getAccounts().map((acc: TAccount) => ({ value: acc.Acct, text: acc.Acct }));
-	opDates = OpDatesMgr.getOpDates().map((dt: TOpDate) => ({ value: dt.OpDate, text: dt.OpDate }));
+	accounts = dbo.accountsMgr.getAccounts().map((acc: TAccount) => ({ value: acc.Acct, text: acc.Acct }));
+	opDates = dbo.opDatesMgr.getOpDates().map((dt: TOpDate) => ({ value: dt.OpDate, text: dt.OpDate }));
 
 	get isOpEntryEditing(): boolean {
 		return isOpEntryEditing(this.operationInput);
@@ -127,10 +125,10 @@ export default class OpEntryDialog extends Vue {
 	submit(): void {
 		this.DATA.Amount = Number(this.DATA.Amount); // string -> number
 		if (isOpEntryEditing(this.operationInput)) {
-			OpEntriesMgr.updateOpEntry(this.DATA)
+			dbo.opEntriesMgr.updateOpEntry(this.DATA)
 				.then(() => this.finishOperation({ opEntry: this.DATA }));
 		} else {
-			OpEntriesMgr.createOpEntry(this.DATA)
+			dbo.opEntriesMgr.createOpEntry(this.DATA)
 				.then(() => this.finishOperation({ opEntry: this.DATA }));
 		}
 	}

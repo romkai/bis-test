@@ -28,19 +28,19 @@
 			v-for="opDate in opDates"
 			:key="opDate.OpDate"
 			:opDate="opDate"
-			@click="activeOpDate=opDate"
 			:active="!!activeOpDate && opDate.OpDate===activeOpDate.OpDate"
-			@editOpDate="editOpDate(opDate)"
-			@deleteOpDate="deleteOpDate(opDate)"
 			:hover="hover"
 			:crud="crud"
+			@click="activeOpDate=opDate"
+			@editOpDate="editOpDate(opDate)"
+			@deleteOpDate="deleteOpDate(opDate)"
 		)
 
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 import nothingToDo from '@/ui-operations/nothingToDo';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import addOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/addOpDateOperation';
@@ -63,7 +63,7 @@ export default class OpDatesList extends Vue {
 	checkCRUD = checkCRUD;
 
 	get opDates(): TOpDate[] {
-		return OpDatesMgr.getOpDates();
+		return dbo.opDatesMgr.getOpDates();
 	}
 
 	@Watch('activeOpDate')

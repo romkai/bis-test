@@ -1,5 +1,4 @@
 import store from '@/store/index';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import { IOpDatesMgr } from '@/blogic/classes/OpDatesMgr/types/OpDatesMgrTypes';
 
@@ -21,7 +20,7 @@ class OpDatesMgr implements IOpDatesMgr {
 		return store.dispatch('updateOpDate', opDate);
 	}
 
-	public deleteOpDate(opDate: TOpEntry): Promise<void> {
+	public deleteOpDate(opDate: TOpDate): Promise<void> {
 		return store.dispatch('deleteOpDate', opDate);
 	}
 

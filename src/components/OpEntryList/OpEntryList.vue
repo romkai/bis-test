@@ -34,12 +34,11 @@
 			:key="index"
 			:opEntry="opEntry"
 			:active="!!activeOpEntry && opEntry.Id===activeOpEntry.Id"
+			:hover="hover"
+			:crud="crud"
 			@click="activeOpEntry=opEntry"
 			@editOpEntry="editOpEntry(opEntry)"
 			@deleteOpEntry="deleteOpEntry(opEntry)"
-			activeItem
-			:hover="hover"
-			:crud="crud"
 		)
 
 </template>
@@ -48,7 +47,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import nothingToDo from '@/ui-operations/nothingToDo';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
-import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
@@ -93,15 +92,13 @@ export default class OpEntryList extends Vue {
 	}
 
 	get opEntries(): TOpEntry[] {
-		if (this.mode === TOpEntryListMode.ALL) {
-			return OpEntriesMgr.getOpEntries();
-		}
+		if (this.mode === TOpEntryListMode.ALL) return dbo.opEntriesMgr.getOpEntries();
 		if (!this.current) return [];
 		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && isAccount(this.current)) {
-			return OpEntriesMgr.getOpEntriesForAccount(this.current.Acct);
+			return dbo.opEntriesMgr.getOpEntriesForAccount(this.current.Acct);
 		}
 		if (this.mode === TOpEntryListMode.FOR_DATE && isOpDate(this.current)) {
-			return OpEntriesMgr.getOpEntriesForDate(this.current.OpDate);
+			return dbo.opEntriesMgr.getOpEntriesForDate(this.current.OpDate);
 		}
 		return [];
 	}
@@ -115,7 +112,11 @@ export default class OpEntryList extends Vue {
 	}
 
 	deleteOpEntry(opEntry: TOpEntry): void {
-		deleteOpEntryOperation(opEntry).then().catch(nothingToDo);
+		deleteOpEntryOperation(opEntry).then(() => {
+			if (opEntry.Id === this.activeOpEntry?.Id) {
+				this.activeOpEntry = null;
+			}
+		}).catch(nothingToDo);
 	}
 
 }

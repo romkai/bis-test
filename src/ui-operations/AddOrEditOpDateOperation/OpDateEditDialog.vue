@@ -34,7 +34,7 @@ import {
 	TEditOpDateOperationResult,
 	isOpDateEditing,
 } from '@/ui-operations/AddOrEditOpDateOperation/types/AddOrEditOpDateTypes';
-import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
+import dbo from '@/blogic/classes/Dbo/Dbo';
 
 @Component
 export default class OpDateDialog extends Vue {
@@ -61,7 +61,7 @@ export default class OpDateDialog extends Vue {
 
 	get dateValid(): boolean {
 		return !!this.DATA.OpDate && (
-			this.isOpDateEditing || !OpDatesMgr.opDateExists(this.DATA.OpDate)
+			this.isOpDateEditing || !dbo.opDatesMgr.opDateExists(this.DATA.OpDate)
 		);
 	}
 
@@ -75,10 +75,10 @@ export default class OpDateDialog extends Vue {
 
 	submit(): void {
 		if (isOpDateEditing(this.operationInput)) {
-			OpDatesMgr.updateOpDate(this.DATA)
+			dbo.opDatesMgr.updateOpDate(this.DATA)
 				.then(() => this.finishOperation({ opDate: this.DATA }));
 		} else {
-			OpDatesMgr.createOpDate(this.DATA)
+			dbo.opDatesMgr.createOpDate(this.DATA)
 				.then(() => this.finishOperation({ opDate: this.DATA }));
 		}
 	}
