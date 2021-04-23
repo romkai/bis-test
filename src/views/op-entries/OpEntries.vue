@@ -27,7 +27,7 @@
 				:key="index"
 				:opEntry="opEntry"
 				@click="activeOpEntry=opEntry"
-				:active="opEntry.Id===activeOpEntry.Id"
+				:active="!!activeOpEntry && opEntry.Id===activeOpEntry.Id"
 				@editOpEntry="editOpEntry(opEntry)"
 				@deleteOpEntry="deleteOpEntry(opEntry)"
 				hover
@@ -42,14 +42,18 @@
 				b-col.text-right(cols="auto") Остаток
 
 		template(#defaultRight)
+			.my-3.text-center(
+				v-if="!activeOpEntry"
+			) Выберите операцию в списке слева
+
 			OpEntryInfo(
+				v-else
 				:opEntry="activeOpEntry"
 			)
 </template>
 
 <script lang="ts">
 
-import { isEqual } from 'lodash';
 import { Component, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import OpEntryItem from '@/views/accounts/components/OpEntryItem.vue';
@@ -70,7 +74,6 @@ import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
 })
 export default class OpEntries extends Vue {
 	activeOpEntry: TOpEntry|null = null;
-	isEqual = isEqual;
 
 	created(): void {
 		if (this.opEntries.length) {
@@ -79,7 +82,7 @@ export default class OpEntries extends Vue {
 	}
 
 	get opEntries(): TOpEntry[] {
-		return OpEntriesMgr.opEntries;
+		return OpEntriesMgr.getOpEntries();
 	}
 
 	addOpEntry(): void {
@@ -91,7 +94,11 @@ export default class OpEntries extends Vue {
 	}
 
 	deleteOpEntry(opEntry: TOpEntry): void {
-		deleteOpEntryOperation(opEntry).then().catch(nothingToDo);
+		deleteOpEntryOperation(opEntry).then(() => {
+			if (opEntry.Id === this.activeOpEntry?.Id) {
+				this.activeOpEntry = null;
+			}
+		}).catch(nothingToDo);
 	}
 }
 </script>

@@ -1,11 +1,10 @@
 import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TOpDate } from '@/blogic/entities/OpDate';
-import { orderBy } from 'lodash';
 
 class OpDatesMgr {
 	public get opDates(): TOpDate[] {
-		return orderBy(store.state.opDates,  ['OpDate'], ['desc']);
+		return store.getters.opDates;
 	}
 	public get lastDate(): string {
 		if (this.opDates.length === 0) return '';
@@ -20,7 +19,7 @@ class OpDatesMgr {
 	public deleteOpDate(opDate: TOpEntry): Promise<void> {
 		return store.dispatch('deleteOpDate', opDate);
 	}
-	public opDateExists(dt: string) {
+	public opDateExists(dt: string): boolean {
 		return Boolean(store.state.opDates.find((opDate: TOpDate) => opDate.OpDate === dt));
 	}
 }

@@ -6,6 +6,7 @@ import { TOpDate } from '@/blogic/entities/OpDate';
 import accountsData from '@/store/json/acct.json';
 import opDatesData from '@/store/json/opdate.json';
 import opEntriesData from '@/store/json/doc.json';
+import { orderBy } from 'lodash';
 
 Vue.use(Vuex);
 
@@ -70,7 +71,6 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-
 		// Accounts
 		createAccount(context, account: TAccount) {
 			return context.commit('CREATE_ACCOUNT', account);
@@ -81,7 +81,6 @@ export default new Vuex.Store({
 		deleteAccount(context, account: TAccount) {
 			return context.commit('DELETE_ACCOUNT', account);
 		},
-
 		// OpEntries
 		createOpEntry(context, op: TOpEntry) {
 			return context.commit('CREATE_OP_ENTRY', op);
@@ -92,7 +91,6 @@ export default new Vuex.Store({
 		deleteOpEntry(context, op: TOpEntry) {
 			return context.commit('DELETE_OP_ENTRY', op);
 		},
-
 		// OpDates
 		createOpDate(context, opDate: TOpDate) {
 			return context.commit('CREATE_OP_DATE', opDate);
@@ -106,6 +104,16 @@ export default new Vuex.Store({
 	},
 
 	getters: {
+		// Отсортированные данные
+		opEntries: (state) => {
+			return orderBy(state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
+		},
+		opDates: (state) => {
+			return orderBy(state.opDates,  ['OpDate'], ['desc']);
+		},
+		accounts: (state) => {
+			return orderBy(state.accounts,  ['Acct']);
+		},
 	},
 
 	modules: {},

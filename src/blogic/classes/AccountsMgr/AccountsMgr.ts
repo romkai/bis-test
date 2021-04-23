@@ -2,11 +2,10 @@ import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
 import OpEntriesMgr from '@/blogic/classes/OpEntriesMgr/OpEntriesMgr';
-import { orderBy } from 'lodash';
 
 class AccountsMgr {
 	public get accounts(): TAccount[] {
-		return orderBy(store.state.accounts, 'Acct')
+		return store.getters.accounts;
 	}
 	public acctOstForDate(acct: string, date: string): number {
 		const account = this.accounts.find((item: TAccount) => item.Acct === acct);

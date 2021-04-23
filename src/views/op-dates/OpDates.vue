@@ -21,12 +21,16 @@
 					.item-btn-slot
 
 		template(#defaultLeft)
+			.my-3.text-center(
+				v-if="opDates.length===0"
+			) Опер.дни не найдены
+
 			OpDateItem(
 				v-for="opDate in opDates"
 				:key="opDate.OpDate"
 				:opDate="opDate"
 				@click="activeOpDate=opDate"
-				:active="opDate.OpDate===activeOpDate.OpDate"
+				:active="!!activeOpDate && opDate.OpDate===activeOpDate.OpDate"
 				@editOpDate="editOpDate(opDate)"
 				@deleteOpDate="deleteOpDate(opDate)"
 			)
@@ -51,10 +55,15 @@
 
 		template(#defaultRight)
 			.my-3.text-center(
-				v-if="opEntriesForDate.length===0"
+				v-if="!activeOpDate"
+			) Выберите опер.день в списке слева
+
+			.my-3.text-center(
+				v-else-if="opEntriesForDate.length===0"
 			) Операций не найдено за этот день
 
 			OpEntryItem(
+				v-else
 				v-for="(opEntry, index) in opEntriesForDate"
 				:key="index"
 				:opEntry="opEntry"
@@ -100,7 +109,7 @@ export default class OpDates extends Vue {
 	}
 
 	get opEntriesForDate(): TOpEntry[] {
-		if (!this.activeOpDate) return [];
+		if (this.activeOpDate === null) return [];
 		return OpEntriesMgr.getOpEntriesForDate(this.activeOpDate.OpDate);
 	}
 
@@ -113,7 +122,11 @@ export default class OpDates extends Vue {
 	}
 
 	deleteOpDate(opDate: TOpDate): void {
-		deleteOpDateOperation(opDate).then().catch(nothingToDo);
+		deleteOpDateOperation(opDate).then(() => {
+			if (opDate.OpDate === this.activeOpDate?.OpDate) {
+				this.activeOpDate = null;
+			}
+		}).catch(nothingToDo);
 	}
 
 	addOpEntry(): void {

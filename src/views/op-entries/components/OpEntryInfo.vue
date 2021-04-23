@@ -19,10 +19,11 @@ import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import AccountsMgr from '@/blogic/classes/AccountsMgr/AccountsMgr';
 import OpDatesMgr from '@/blogic/classes/OpDatesMgr/OpDatesMgr';
+import { PropType } from 'vue';
 
 @Component
 export default class OpEntryInfo extends Vue {
-	@Prop({ type: Object, required: true }) opEntry!: TOpEntry;
+	@Prop({ type: Object as PropType<TOpEntry>, required: true }) opEntry!: TOpEntry;
 
 	moneyUnits = moneyUnits;
 	lastDate = OpDatesMgr.lastDate;

@@ -1,16 +1,16 @@
-import { orderBy, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 
 class OpEntriesMgr {
-	public get opEntries(): TOpEntry[] {
-		return orderBy(store.state.opEntries, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
+	public getOpEntries() {
+		return store.getters.opEntries;
 	}
 	public getOpEntriesForAccount(acct: string): TOpEntry[] {
-		return this.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
+		return store.getters.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
 	}
 	public getOpEntriesForDate(dt: string): TOpEntry[] {
-		return sortBy(this.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
+		return sortBy(store.getters.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
 		return store.dispatch('createOpEntry', opEntry);

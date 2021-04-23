@@ -33,7 +33,7 @@
 				:account="account"
 				:currentDate="currentDate"
 				@click="activeAccount=account"
-				:active="account.Acct===activeAccount.Acct"
+				:active="!!activeAccount && account.Acct===activeAccount.Acct"
 				@editAccount="editAccount(account)"
 				@deleteAccount="deleteAccount(account)"
 			)
@@ -59,10 +59,15 @@
 
 		template(#defaultRight)
 			.my-3.text-center(
-				v-if="opEntriesForAccount.length===0"
+				v-if="!activeAccount"
+			) Выберите счет в списке слева
+
+			.my-3.text-center(
+				v-else-if="opEntriesForAccount.length===0"
 			) Операций не найдено по этому счету
 
 			OpEntryItem(
+				v-else
 				v-for="(opEntry, index) in opEntriesForAccount"
 				:key="index"
 				:opEntry="opEntry"
@@ -126,7 +131,11 @@ export default class Accounts extends Vue {
 	}
 
 	deleteAccount(account: TAccount): void {
-		deleteAccountOperation(account).then().catch(nothingToDo);
+		deleteAccountOperation(account).then(() => {
+			if (account.Acct === this.activeAccount?.Acct) {
+				this.activeAccount = null;
+			}
+		}).catch(nothingToDo);
 	}
 
 	addOpEntry(): void {
