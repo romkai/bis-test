@@ -4,15 +4,18 @@
 		template(#left)
 			OpDatesList(
 				title="Операционные дни"
-				@setActiveOpDate="activeOpDate=$event"
-				hover
+				permissions="CRUD"
+				@onActiveOpDate="activeOpDate=$event"
 			)
 
 		template(#right)
-			OpEntryList(
-				title="Операции в опер.день"
+			OpEntriesList(
+				title="Операции"
 				:mode="TOpEntryListMode.FOR_DATE"
 				:current="activeOpDate"
+				permissions="CRUD"
+				nonClickable
+				noDateCol
 			)
 
 </template>
@@ -23,11 +26,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TOpDate } from '@/blogic/entities/OpDate';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import OpDatesList from '@/components/OpDatesList/OpDatesList.vue';
-import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
-import OpEntryList from '@/components/OpEntryList/OpEntryList.vue';
+import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
+import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';
 
 @Component({
-	components: { OpEntryList, OpDatesList, PageTemplate },
+	components: { OpEntriesList, OpDatesList, PageTemplate },
 })
 export default class OpDates extends Vue {
 	activeOpDate: TOpDate|null = null;

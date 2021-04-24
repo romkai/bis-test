@@ -1,16 +1,16 @@
-import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { TAccount } from '@/blogic/entities/Account';
 import dbo from '@/blogic/classes/Dbo/Dbo';
-import { IAccountsMgr } from '@/blogic/classes/AccountsMgr/types/AccountsMgrTypes';
+import { IAccountsMgr } from '@/blogic/classes/Dbo/types/AccountsMgrTypes';
+import accountsModule from '@/store/modules/accountsModule';
 
 class AccountsMgr implements IAccountsMgr {
 	public getAccounts(): TAccount[] {
-		return store.getters.accounts;
+		return accountsModule.accounts;
 	}
 
-	public acctOstForDate(acct: string, date: string): number {
-		const account = store.getters.accounts.find((item: TAccount) => item.Acct === acct);
+	public getAcctOstForDate(acct: string, date: string): number {
+		const account = accountsModule.accounts.find((item: TAccount) => item.Acct === acct);
 		if (!account) return 0.00;
 		const initialAmount = account.Ost;
 		const periodAmount = dbo.opEntriesMgr.getOpEntriesForAccount(acct)
@@ -23,19 +23,19 @@ class AccountsMgr implements IAccountsMgr {
 	}
 
 	public accountExists(acct: string): boolean {
-		return Boolean(store.state.accounts.find((acc: TAccount) => acc.Acct === acct));
+		return Boolean(accountsModule.accounts.find((acc: TAccount) => acc.Acct === acct));
 	}
 
 	public createAccount(account: TAccount): Promise<void> {
-		return store.dispatch('createAccount', account);
+		return accountsModule.createAccount(account);
 	}
 
 	public updateAccount(account: TAccount): Promise<void> {
-		return store.dispatch('updateAccount', account);
+		return accountsModule.updateAccount(account);
 	}
 
 	public deleteAccount(account: TAccount): Promise<void> {
-		return store.dispatch('deleteAccount', account);
+		return accountsModule.deleteAccount(account);
 	}
 }
 

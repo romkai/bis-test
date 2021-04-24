@@ -1,10 +1,10 @@
 <template lang="pug">
 	b-row.item-wrapper.text-body(
 		@click="$emit('click')"
-		:class="{ 'active-item': active, 'block-hover': hover, 'item-wrapper-active': hover }"
+		:class="itemClass"
 	)
 		b-col(
-			v-if="!hideDate"
+			v-if="!noDateCol"
 			cols="3"
 		) {{ opEntry.OpDate }}
 		b-col(cols="4")
@@ -16,7 +16,7 @@
 		b-col.text-right(cols="auto")
 			.item-btn-slot
 				b-button.mr-1(
-					v-if="checkCRUD(crud, 'U')"
+					v-if="checkPermissions(permissions, 'U')"
 					variant="outline-info"
 					@click.stop="$emit('editOpEntry')"
 					size="sm"
@@ -24,7 +24,7 @@
 					b-icon(icon="pencil-square")
 
 				b-button.trash-icon-hover(
-					v-if="checkCRUD(crud, 'D')"
+					v-if="checkPermissions(permissions, 'D')"
 					variant="outline-secondary"
 					@click.stop="$emit('deleteOpEntry')"
 					size="sm"
@@ -36,18 +36,26 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import checkCRUD from '@/helpers/permissions';
+import checkPermissions from '@/helpers/checkPermissions';
 
 @Component
 export default class OpEntryItem extends Vue {
 	@Prop({ type: Object, required: true }) opEntry!: TOpEntry;
 	@Prop({ type: Boolean, default: false }) active!: boolean;
-	@Prop({ type: Boolean, default: false }) hideDate!: boolean;
-	@Prop({ type: Boolean, default: false }) hover!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) crud!: string;
+	@Prop({ type: Boolean, default: false }) noDateCol!: boolean;
+	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
-	checkCRUD = checkCRUD;
+	checkPermissions = checkPermissions;
+
+	get itemClass(): Record<string, boolean> {
+		return {
+			'active-item': this.active,
+			'block-hover': !this.nonClickable,
+			'item-wrapper-active': !this.nonClickable,
+		};
+	}
 }
 </script>

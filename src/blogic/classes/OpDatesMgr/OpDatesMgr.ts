@@ -1,31 +1,31 @@
-import store from '@/store/index';
 import { TOpDate } from '@/blogic/entities/OpDate';
-import { IOpDatesMgr } from '@/blogic/classes/OpDatesMgr/types/OpDatesMgrTypes';
+import { IOpDatesMgr } from '@/blogic/classes/Dbo/types/OpDatesMgrTypes';
+import opDatesModule from '@/store/modules/opDatesModule';
 
 class OpDatesMgr implements IOpDatesMgr {
 	public getOpDates(): TOpDate[] {
-		return store.getters.opDates;
+		return opDatesModule.opDates;
 	}
 
 	public getLastDate(): string {
-		if (store.getters.opDates.length === 0) return '';
-		return store.getters.opDates[0].OpDate;
+		if (opDatesModule.opDates.length === 0) return '';
+		return opDatesModule.opDates[0].OpDate;
 	}
 
 	public createOpDate(opDate: TOpDate): Promise<void> {
-		return store.dispatch('createOpDate', opDate);
+		return opDatesModule.createOpDate(opDate);
 	}
 
 	public updateOpDate(opDate: TOpDate): Promise<void> {
-		return store.dispatch('updateOpDate', opDate);
+		return opDatesModule.updateOpDate(opDate);
 	}
 
 	public deleteOpDate(opDate: TOpDate): Promise<void> {
-		return store.dispatch('deleteOpDate', opDate);
+		return opDatesModule.deleteOpDate(opDate);
 	}
 
 	public opDateExists(dt: string): boolean {
-		return Boolean(store.state.opDates.find((opDate: TOpDate) => opDate.OpDate === dt));
+		return Boolean(opDatesModule.opDates.find((opDate: TOpDate) => opDate.OpDate === dt));
 	}
 }
 

@@ -1,31 +1,31 @@
 import { sortBy } from 'lodash';
-import store from '@/store/index';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
-import { IOpEntriesMgr } from '@/blogic/classes/OpEntriesMgr/types/OpEntriesMgrTypes';
+import { IOpEntriesMgr } from '@/blogic/classes/Dbo/types/OpEntriesMgrTypes';
+import opEntriesModule from '@/store/modules/opEntriesModule';
 
 class OpEntriesMgr implements IOpEntriesMgr {
 	public getOpEntries() {
-		return store.getters.opEntries;
+		return opEntriesModule.opEntries;
 	}
 
 	public getOpEntriesForAccount(acct: string): TOpEntry[] {
-		return store.getters.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
+		return opEntriesModule.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
 	}
 
 	public getOpEntriesForDate(dt: string): TOpEntry[] {
-		return sortBy(store.getters.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
+		return sortBy(opEntriesModule.opEntries.filter((op: TOpEntry) => op.OpDate === dt), ['AcctDB', 'AcctCr', 'Amount']);
 	}
 
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
-		return store.dispatch('createOpEntry', opEntry);
+		return opEntriesModule.createOpEntry(opEntry);
 	}
 
 	public updateOpEntry(opEntry: TOpEntry): Promise<void> {
-		return store.dispatch('updateOpEntry', opEntry);
+		return opEntriesModule.updateOpEntry(opEntry);
 	}
 
 	public deleteOpEntry(opEntry: TOpEntry): Promise<void> {
-		return store.dispatch('deleteOpEntry', opEntry);
+		return opEntriesModule.deleteOpEntry(opEntry);
 	}
 }
 

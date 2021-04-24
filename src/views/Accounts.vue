@@ -2,17 +2,19 @@
 	PageTemplate
 
 		template(#left)
-			AccountList(
+			AccountsList(
 				title="Банковские счета"
-				@setActiveAccount="activeAccount=$event"
-				hover
+				permissions="CRUD"
+				@onActiveAccount="activeAccount=$event"
 			)
 
 		template(#right)
-			OpEntryList(
+			OpEntriesList(
 				title="Операции по счету"
 				:mode="TOpEntryListMode.FOR_ACCOUNT"
 				:current="activeAccount"
+				permissions="CRUD"
+				nonClickable
 			)
 
 </template>
@@ -22,14 +24,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { TAccount } from '@/blogic/entities/Account';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
-import AccountList from '@/components/AccountList/AccountList.vue';
-import OpEntryList from '@/components/OpEntryList/OpEntryList.vue';
-import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
+import AccountsList from '@/components/AccountsList/AccountsList.vue';
+import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';
+import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
 
 @Component({
 	components: {
-		OpEntryList,
-		AccountList,
+		OpEntriesList,
+		AccountsList,
 		PageTemplate,
 	}
 })

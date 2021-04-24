@@ -9,7 +9,7 @@
 		)
 
 		b-button(
-			v-if="checkCRUD(crud, 'C')"
+			v-if="checkPermissions(permissions, 'C')"
 			@click="addAccount"
 			variant="outline-secondary"
 		)
@@ -30,10 +30,10 @@
 			:key="account.Acct"
 			:account="account"
 			:currentDate="currentDate"
-			:active="!!activeAccount && account.Acct===activeAccount.Acct"
-			:hover="hover"
-			:crud="crud"
-			@click="activeAccount=account"
+			:active="isActive(account)"
+			:nonClickable="nonClickable"
+			:permissions="permissions"
+			@click="click(account)"
 			@editAccount="editAccount(account)"
 			@deleteAccount="deleteAccount(account)"
 		)
@@ -47,31 +47,31 @@ import addAccountOperation from '@/ui-operations/AddOrEditAccountOperation/addAc
 import nothingToDo from '@/ui-operations/nothingToDo';
 import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/editAccountOperation';
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
-import AccountItem from '@/components/AccountList/AccountItem.vue';
-import checkCRUD from '@/helpers/permissions';
+import AccountItem from '@/components/AccountsList/AccountItem.vue';
 import dbo from '@/blogic/classes/Dbo/Dbo';
+import checkPermissions from '@/helpers/checkPermissions';
 
 @Component({
 	components: {
 		AccountItem,
 	},
 })
-export default class AccountList extends Vue {
+export default class AccountsList extends Vue {
 	@Prop({ type: String, default: 'Банковские счета' }) title!: string;
-	@Prop({ type: Boolean, default: false }) hover!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) crud!: string;
+	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeAccount: TAccount|null = null;
 	currentDate = dbo.opDatesMgr.getLastDate();
-	checkCRUD = checkCRUD;
+	checkPermissions = checkPermissions;
 
 	get accounts(): TAccount[] {
 		return dbo.accountsMgr.getAccounts();
 	}
 
 	@Watch('activeAccount')
-	onActiveAccountChange(): void {
-		this.$emit('setActiveAccount', this.activeAccount);
+	onActiveAccount(): void {
+		this.$emit('onActiveAccount', this.activeAccount);
 	}
 
 	created(): void {
@@ -81,6 +81,15 @@ export default class AccountList extends Vue {
 	locateFirstAccount(): void {
 		if (this.accounts.length === 0) return;
 		this.activeAccount = this.accounts[0];
+	}
+
+	isActive(account: TAccount): boolean {
+		return !!this.activeAccount && account.Acct === this.activeAccount.Acct;
+	}
+
+	click(account: TAccount): void {
+		if (this.nonClickable) return;
+		this.activeAccount = account;
 	}
 
 	addAccount(): void {

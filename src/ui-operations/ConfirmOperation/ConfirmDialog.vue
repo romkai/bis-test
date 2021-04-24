@@ -24,7 +24,7 @@ export default class ConfirmationDialog extends Vue {
 
 	show = true;
 
-	closeDialog() {
+	closeDialog(): void {
 		this.cancelOperation();
 	}
 }

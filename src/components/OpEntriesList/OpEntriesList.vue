@@ -3,7 +3,7 @@
 		h5.mb-0 {{ title }}
 
 		b-button(
-			v-if="checkCRUD(crud, 'C')"
+			v-if="checkPermissions(permissions, 'C')"
 			@click="addOpEntry"
 			variant="outline-secondary"
 		)
@@ -14,15 +14,18 @@
 			span Добавить операцию
 
 		b-row.text-subtitle.text--secondary
-			b-col(cols="3") Дата опер.дня
+			b-col(
+				v-if="!noDateCol"
+				cols="3"
+			) Дата опер.дня
 			b-col(cols="4") Счет Дебета / Кредита
-			b-col.text-right() Сумма
+			b-col.text-right Сумма
 			b-col(cols="auto")
 				.item-btn-slot
 
 		.my-3.text-center(
 			v-if="requiredAccountOrOpDate"
-		) Не указан родительский элемент
+		) {{ requiredText }}
 
 		.my-3.text-center(
 			v-else-if="opEntries.length===0"
@@ -33,10 +36,11 @@
 			v-for="(opEntry, index) in opEntries"
 			:key="index"
 			:opEntry="opEntry"
-			:active="!!activeOpEntry && opEntry.Id===activeOpEntry.Id"
-			:hover="hover"
-			:crud="crud"
-			@click="activeOpEntry=opEntry"
+			:active="isActive(opEntry)"
+			:nonClickable="nonClickable"
+			:permissions="permissions"
+			:noDateCol="noDateCol"
+			@click="click(opEntry)"
 			@editOpEntry="editOpEntry(opEntry)"
 			@deleteOpEntry="deleteOpEntry(opEntry)"
 		)
@@ -51,31 +55,32 @@ import dbo from '@/blogic/classes/Dbo/Dbo';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
-import OpEntryItem from '@/components/OpEntryList/OpEntryItem.vue';
+import OpEntryItem from '@/components/OpEntriesList/OpEntryItem.vue';
 import { PropType } from 'vue';
 import { isAccount, TAccount } from '@/blogic/entities/Account';
-import { TOpEntryListMode } from '@/components/OpEntryList/types/OpEntryListTypes';
+import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
 import { TOpDate, isOpDate } from '@/blogic/entities/OpDate';
-import checkCRUD from '@/helpers/permissions';
+import checkPermissions from '@/helpers/checkPermissions';
 
 @Component({
 	components: {
 		OpEntryItem,
 	},
 })
-export default class OpEntryList extends Vue {
+export default class OpEntriesList extends Vue {
 	@Prop({ type: String, default: 'Операции по счетам' }) title!: string;
 	@Prop({ type: Number, default: TOpEntryListMode.ALL }) mode!: TOpEntryListMode;
 	@Prop({ type: Object as PropType<TAccount|TOpDate> }) current!: TAccount|TOpDate;
-	@Prop({ type: Boolean, default: false }) hover!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) crud!: string;
+	@Prop({ type: Boolean, default: false }) noDateCol!: boolean;
+	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
+	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeOpEntry: TOpEntry|null = null;
-	checkCRUD = checkCRUD;
+	checkPermissions = checkPermissions;
 
 	@Watch('activeOpEntry')
-	onActiveOpEntryChange(): void {
-		this.$emit('setActiveOpEntry', this.activeOpEntry);
+	onActiveOpEntry(): void {
+		this.$emit('onActiveOpEntry', this.activeOpEntry);
 	}
 
 	created(): void {
@@ -87,8 +92,23 @@ export default class OpEntryList extends Vue {
 		this.activeOpEntry = this.opEntries[0];
 	}
 
+	isActive(opEntry: TOpEntry): boolean {
+		return !!this.activeOpEntry && opEntry.Id === this.activeOpEntry.Id;
+	}
+
+	click(opEntry: TOpEntry): void {
+		if (this.nonClickable) return;
+		this.activeOpEntry = opEntry;
+	}
+
 	get requiredAccountOrOpDate(): boolean {
 		return !this.current && this.mode !== TOpEntryListMode.ALL;
+	}
+
+	get requiredText(): string {
+		if (!this.current && this.mode === TOpEntryListMode.FOR_DATE) return 'Не выбрана дата';
+		if (!this.current && this.mode === TOpEntryListMode.FOR_ACCOUNT) return 'Не выбран банковский счет';
+		return '';
 	}
 
 	get opEntries(): TOpEntry[] {

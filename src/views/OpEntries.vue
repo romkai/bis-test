@@ -2,14 +2,15 @@
 	PageTemplate
 
 		template(#left)
-			OpEntryList(
-				@setActiveOpEntry="activeOpEntry=$event"
-				hover
+			OpEntriesList(
+				title="Список операций"
+				@onActiveOpEntry="activeOpEntry=$event"
+				permissions="CRUD"
 			)
 
 		template(#right)
 			OpEntryInfo(
-				v-if="!!activeOpEntry"
+				title="Проводки по операции"
 				:opEntry="activeOpEntry"
 			)
 
@@ -21,11 +22,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/entities/OpEntry';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import OpEntryInfo from '@/components/OpEntryInfo/OpEntryInfo.vue';
-import OpEntryList from '@/components/OpEntryList/OpEntryList.vue';
+import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';
 
 @Component({
 	components: {
-		OpEntryList,
+		OpEntriesList,
 		OpEntryInfo,
 		PageTemplate,
 	},
