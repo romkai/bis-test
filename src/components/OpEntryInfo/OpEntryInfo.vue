@@ -3,7 +3,7 @@
 		h5.mb-0 {{ title }}
 
 		b-row.text-subtitle.text--secondary
-			b-col() Номер счета
+			b-col() Счет дебета и кредита
 			b-col.text-right(cols="auto") Остаток
 
 		.my-3.text-center(v-if="!opEntry") Не выбрана операция
@@ -24,17 +24,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 
 @Component
 export default class OpEntryInfo extends Vue {
 	@Prop({ type: String, default: 'Список проводок' }) title!: string;
-	@Prop({ required: true }) opEntry!: TOpEntry|null;
+	@Prop({ type: Object }) opEntry!: TOpEntry|null;
 
 	lastDate = dbo.opDatesMgr.getLastDate();
-
 	moneyUnits = moneyUnits;
 	formatMoney = formatMoney;
 

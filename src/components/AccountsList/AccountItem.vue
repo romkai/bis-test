@@ -31,9 +31,9 @@
 
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import { TAccount } from '@/blogic/entities/Account';
+import { TAccount } from '@/blogic/Entities/Account';
 import checkPermissions from '@/helpers/checkPermissions';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 
 @Component
 export default class AccountItem extends Vue {

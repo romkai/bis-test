@@ -39,7 +39,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TAccount } from '@/blogic/entities/Account';
+import { TAccount } from '@/blogic/Entities/Account';
 import {
 	TAddAccountOperationInput,
 	TAddAccountOperationResult,
@@ -47,7 +47,7 @@ import {
 	TEditAccountOperationResult,
 	isAccountEditing,
 } from '@/ui-operations/AddOrEditAccountOperation/types/AddOrEditAccountTypes';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 
 @Component
 export default class AccountDialog extends Vue {

@@ -11,8 +11,7 @@
 		template(#right)
 			OpEntriesList(
 				title="Операции"
-				:mode="TOpEntryListMode.FOR_DATE"
-				:current="activeOpDate"
+				:currentOpDate="activeOpDate"
 				permissions="CRUD"
 				nonClickable
 				noDateCol
@@ -23,7 +22,7 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import OpDatesList from '@/components/OpDatesList/OpDatesList.vue';
 import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';

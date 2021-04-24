@@ -24,8 +24,8 @@
 				.item-btn-slot
 
 		.my-3.text-center(
-			v-if="requiredAccountOrOpDate"
-		) {{ requiredText }}
+			v-if="!!requiredError"
+		) {{ requiredError }}
 
 		.my-3.text-center(
 			v-else-if="opEntries.length===0"
@@ -50,16 +50,15 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import nothingToDo from '@/ui-operations/nothingToDo';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
+import dbo from '@/blogic/Dbo/dbo';
 import addOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/addOpEntryOperation';
 import editOpEntryOperation from '@/ui-operations/AddOrEditOpEntryOperation/editOpEntryOperation';
 import deleteOpEntryOperation from '@/ui-operations/DeleteOpEntryOperation/deleteOpEntryOperation';
 import OpEntryItem from '@/components/OpEntriesList/OpEntryItem.vue';
-import { PropType } from 'vue';
-import { isAccount, TAccount } from '@/blogic/entities/Account';
+import { TAccount } from '@/blogic/Entities/Account';
 import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
-import { TOpDate, isOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import checkPermissions from '@/helpers/checkPermissions';
 
 @Component({
@@ -69,14 +68,20 @@ import checkPermissions from '@/helpers/checkPermissions';
 })
 export default class OpEntriesList extends Vue {
 	@Prop({ type: String, default: 'Операции по счетам' }) title!: string;
-	@Prop({ type: Number, default: TOpEntryListMode.ALL }) mode!: TOpEntryListMode;
-	@Prop({ type: Object as PropType<TAccount|TOpDate> }) current!: TAccount|TOpDate;
+	@Prop({ type: Object }) currentAccount!: TAccount|null|undefined;
+	@Prop({ type: Object }) currentOpDate!: TOpDate|null|undefined;
 	@Prop({ type: Boolean, default: false }) noDateCol!: boolean;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
 	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeOpEntry: TOpEntry|null = null;
 	checkPermissions = checkPermissions;
+
+	get mode(): TOpEntryListMode {
+		if (this.currentAccount !== undefined) return TOpEntryListMode.FOR_ACCOUNT;
+		if (this.currentOpDate !== undefined) return TOpEntryListMode.FOR_DATE;
+		return TOpEntryListMode.ALL;
+	}
 
 	@Watch('activeOpEntry')
 	onActiveOpEntry(): void {
@@ -101,24 +106,20 @@ export default class OpEntriesList extends Vue {
 		this.activeOpEntry = opEntry;
 	}
 
-	get requiredAccountOrOpDate(): boolean {
-		return !this.current && this.mode !== TOpEntryListMode.ALL;
-	}
-
-	get requiredText(): string {
-		if (!this.current && this.mode === TOpEntryListMode.FOR_DATE) return 'Не выбрана дата';
-		if (!this.current && this.mode === TOpEntryListMode.FOR_ACCOUNT) return 'Не выбран банковский счет';
+	get requiredError(): string {
+		if (!this.currentOpDate && this.mode === TOpEntryListMode.FOR_DATE) return 'Не выбрана дата';
+		if (!this.currentAccount && this.mode === TOpEntryListMode.FOR_ACCOUNT) return 'Не выбран счет';
 		return '';
 	}
 
 	get opEntries(): TOpEntry[] {
 		if (this.mode === TOpEntryListMode.ALL) return dbo.opEntriesMgr.getOpEntries();
-		if (!this.current) return [];
-		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && isAccount(this.current)) {
-			return dbo.opEntriesMgr.getOpEntriesForAccount(this.current.Acct);
+		if (this.requiredError) return [];
+		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && this.currentAccount) {
+			return dbo.opEntriesMgr.getOpEntriesForAccount(this.currentAccount.Acct);
 		}
-		if (this.mode === TOpEntryListMode.FOR_DATE && isOpDate(this.current)) {
-			return dbo.opEntriesMgr.getOpEntriesForDate(this.current.OpDate);
+		if (this.mode === TOpEntryListMode.FOR_DATE && this.currentOpDate) {
+			return dbo.opEntriesMgr.getOpEntriesForDate(this.currentOpDate.OpDate);
 		}
 		return [];
 	}

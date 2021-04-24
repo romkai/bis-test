@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import checkPermissions from '@/helpers/checkPermissions';
 
 @Component

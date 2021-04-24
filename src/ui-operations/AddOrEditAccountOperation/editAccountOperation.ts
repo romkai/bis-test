@@ -1,4 +1,4 @@
-import operationStarter from '../OperationStarter';
+import operationStarter from '@/ui-operations/OperationStarter';
 import { TEditAccountOperationInput, TEditAccountOperationResult } from './types/AddOrEditAccountTypes';
 
 export default function editAccountOperation(input: TEditAccountOperationInput): Promise<TEditAccountOperationResult> {

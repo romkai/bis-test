@@ -26,7 +26,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import {
 	TAddOpDateOperationInput,
 	TAddOpDateOperationResult,
@@ -34,7 +34,7 @@ import {
 	TEditOpDateOperationResult,
 	isOpDateEditing,
 } from '@/ui-operations/AddOrEditOpDateOperation/types/AddOrEditOpDateTypes';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 
 @Component
 export default class OpDateDialog extends Vue {

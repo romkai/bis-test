@@ -1,4 +1,4 @@
-import operationStarter from '../OperationStarter';
+import operationStarter from '@/ui-operations/OperationStarter';
 import { TEditOpDateOperationInput, TEditOpDateOperationResult } from './types/AddOrEditOpDateTypes';
 
 export default function editOpDateOperation(input: TEditOpDateOperationInput): Promise<TEditOpDateOperationResult> {

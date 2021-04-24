@@ -1,4 +1,4 @@
-import operationStarter from '../OperationStarter';
+import operationStarter from '@/ui-operations/OperationStarter';
 import { TAddAccountOperationInput, TAddAccountOperationResult } from './types/AddOrEditAccountTypes';
 
 export default function addAccountOperation(input: TAddAccountOperationInput): Promise<TAddAccountOperationResult> {

@@ -41,13 +41,13 @@
 <script lang="ts">
 
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import addOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/addOpDateOperation';
 import editOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/editOpDateOperation';
 import deleteOpDateOperation from '@/ui-operations/DeleteOpDateOperation/deleteOpDateOperation';
 import checkPermissions from '@/helpers/checkPermissions';
 import nothingToDo from '@/ui-operations/nothingToDo';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 import OpDateItem from '@/components/OpDatesList/OpDateItem.vue';
 
 @Component({

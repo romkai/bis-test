@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import checkPermissions from '@/helpers/checkPermissions';
 

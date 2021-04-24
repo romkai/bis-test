@@ -42,13 +42,13 @@
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { TAccount } from '@/blogic/entities/Account';
+import { TAccount } from '@/blogic/Entities/Account';
 import addAccountOperation from '@/ui-operations/AddOrEditAccountOperation/addAccountOperation';
 import nothingToDo from '@/ui-operations/nothingToDo';
 import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/editAccountOperation';
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import AccountItem from '@/components/AccountsList/AccountItem.vue';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 import checkPermissions from '@/helpers/checkPermissions';
 
 @Component({

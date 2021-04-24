@@ -11,8 +11,7 @@
 		template(#right)
 			OpEntriesList(
 				title="Операции по счету"
-				:mode="TOpEntryListMode.FOR_ACCOUNT"
-				:current="activeAccount"
+				:currentAccount="activeAccount"
 				permissions="CRUD"
 				nonClickable
 			)
@@ -22,7 +21,7 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { TAccount } from '@/blogic/entities/Account';
+import { TAccount } from '@/blogic/Entities/Account';
 import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
 import AccountsList from '@/components/AccountsList/AccountsList.vue';
 import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';

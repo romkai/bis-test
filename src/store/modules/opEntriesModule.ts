@@ -1,17 +1,21 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-class-modules";
-import { orderBy } from 'lodash';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
+import IOpEntriesMgr from '@/blogic/Dbo/types/IOpEntriesMgr';
 import opEntriesData from '@/store/json/doc.json';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
-import store from '../index';
+import { orderBy } from 'lodash';
+import store from '@/store/index';
 
 @Module
-class OpEntriesModule extends VuexModule {
+class OpEntriesModule extends VuexModule implements IOpEntriesMgr {
 
-	private opEntriesTable = opEntriesData.Doc as TOpEntry[];
+	private opEntriesTable: TOpEntry[] = opEntriesData.Doc.map((op, index) => ({...op, Id: index + 1 }));
 
 	@Mutation
 	private CREATE_OP_ENTRY(opEntry: TOpEntry): void {
-		this.opEntriesTable.push(opEntry);
+		const newId = this.opEntriesTable.reduce(
+			(max, op) => Math.max(max, op.Id), 0
+		) + 1;
+		this.opEntriesTable.push({ ...opEntry, Id: newId });
 	}
 
 	@Mutation
@@ -38,38 +42,60 @@ class OpEntriesModule extends VuexModule {
 		this.opEntriesTable = this.opEntriesTable.filter(op => op.AcctDB !== acct && op.AcctCr !== acct);
 	}
 
-	public get opEntries(): TOpEntry[] {
+	private get opEntries(): TOpEntry[] {
 		return orderBy(this.opEntriesTable, ['OpDate', 'AcctDB', 'AcctCr', 'Amount']);
+	}
+
+	public getOpEntries(): TOpEntry[] {
+		return this.opEntries;
+	}
+
+	public getOpEntriesForAccount(acct: string): TOpEntry[] {
+		return this.opEntries.filter((op: TOpEntry) => op.AcctCr === acct || op.AcctDB === acct);
+	}
+
+	public getOpEntriesForDate(date: string): TOpEntry[] {
+		return this.opEntries.filter((op: TOpEntry) => op.OpDate === date);
 	}
 
 	@Action
 	public createOpEntry(opEntry: TOpEntry): Promise<void> {
-		this.CREATE_OP_ENTRY(opEntry);
-		return Promise.resolve();
+		return Promise.resolve()
+			.then(() => {
+				this.CREATE_OP_ENTRY(opEntry);
+			});
 	}
 
 	@Action
 	public updateOpEntry(opEntry: TOpEntry): Promise<void> {
-		this.UPDATE_OP_ENTRY(opEntry);
-		return Promise.resolve();
+		return Promise.resolve()
+			.then(() => {
+				this.UPDATE_OP_ENTRY(opEntry);
+			});
 	}
 
 	@Action
 	public deleteOpEntry(opEntry: TOpEntry): Promise<void> {
-		this.DELETE_OP_ENTRY(opEntry);
-		return Promise.resolve();
+		return Promise.resolve()
+			.then(() => {
+				this.DELETE_OP_ENTRY(opEntry);
+			});
 	}
 
 	@Action
 	public deleteOpEntriesForDate(date: string): Promise<void> {
-		this.DELETE_OP_ENTRIES_FOR_DATE(date);
-		return Promise.resolve();
+		return Promise.resolve()
+			.then(() => {
+				this.DELETE_OP_ENTRIES_FOR_DATE(date);
+			});
 	}
 
 	@Action
 	public deleteOpEntriesForAccount(acc: string): Promise<void> {
-		this.DELETE_OP_ENTRIES_FOR_ACCOUNT(acc);
-		return Promise.resolve();
+		return Promise.resolve()
+			.then(() => {
+				this.DELETE_OP_ENTRIES_FOR_ACCOUNT(acc);
+			});
 	}
 }
 

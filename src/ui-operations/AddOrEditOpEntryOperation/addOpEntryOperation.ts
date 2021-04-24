@@ -1,4 +1,4 @@
-import operationStarter from '../OperationStarter';
+import operationStarter from '@/ui-operations/OperationStarter';
 import { TAddOpEntryOperationInput, TAddOpEntryOperationResult } from './types/AddOrEditOpEntryTypes';
 
 export default function addOpEntryOperation(input: TAddOpEntryOperationInput): Promise<TAddOpEntryOperationResult> {

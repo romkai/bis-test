@@ -57,7 +57,7 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TOpEntry } from '@/blogic/entities/OpEntry';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
 import {
 	TAddOpEntryOperationInput,
 	TAddOpEntryOperationResult,
@@ -65,9 +65,9 @@ import {
 	TEditOpEntryOperationResult,
 	isOpEntryEditing,
 } from '@/ui-operations/AddOrEditOpEntryOperation/types/AddOrEditOpEntryTypes';
-import { TAccount } from '@/blogic/entities/Account';
-import { TOpDate } from '@/blogic/entities/OpDate';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import { TAccount } from '@/blogic/Entities/Account';
+import { TOpDate } from '@/blogic/Entities/OpDate';
+import dbo from '@/blogic/Dbo/dbo';
 
 @Component
 export default class OpEntryDialog extends Vue {

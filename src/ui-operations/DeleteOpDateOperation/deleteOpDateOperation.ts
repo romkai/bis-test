@@ -1,7 +1,7 @@
 import confirmOperation from '@/ui-operations/ConfirmOperation/confirmOperation';
-import { TOpDate } from '@/blogic/entities/OpDate';
+import { TOpDate } from '@/blogic/Entities/OpDate';
 import nothingToDo from '@/ui-operations/nothingToDo';
-import dbo from '@/blogic/classes/Dbo/Dbo';
+import dbo from '@/blogic/Dbo/dbo';
 
 export default function(opDate: TOpDate): Promise<void> {
 	return confirmOperation({

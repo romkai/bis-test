@@ -1,4 +1,4 @@
-import { TOpEntry } from '@/blogic/entities/OpEntry';
+import { TOpEntry } from '@/blogic/Entities/OpEntry';
 
 export type TAddOpEntryOperationInput = void;
 
