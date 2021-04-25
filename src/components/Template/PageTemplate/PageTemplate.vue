@@ -38,7 +38,7 @@ export default class PageTemplate extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../assets/style/utils";
+@import "../../../assets/style/utils";
 
 .page-template__container {
 	height: calc(100vh - 56px);

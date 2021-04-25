@@ -4,7 +4,6 @@
 		template(#left)
 			AccountsList(
 				title="Банковские счета"
-				permissions="CRUD"
 				@onActiveAccount="activeAccount=$event"
 			)
 
@@ -12,7 +11,6 @@
 			OpEntriesList(
 				title="Операции по счету"
 				:currentAccount="activeAccount"
-				permissions="CRUD"
 				nonClickable
 			)
 
@@ -22,10 +20,9 @@
 
 import { Component, Vue } from 'vue-property-decorator';
 import { TAccount } from '@/blogic/Entities/Account';
-import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
+import PageTemplate from '@/components/Template/PageTemplate/PageTemplate.vue';
 import AccountsList from '@/components/AccountsList/AccountsList.vue';
 import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';
-import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
 
 @Component({
 	components: {
@@ -36,7 +33,6 @@ import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTy
 })
 export default class Accounts extends Vue {
 	activeAccount: TAccount|null = null;
-	TOpEntryListMode = TOpEntryListMode
 }
 </script>
 

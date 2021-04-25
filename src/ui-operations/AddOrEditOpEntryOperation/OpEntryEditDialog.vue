@@ -93,9 +93,11 @@ export default class OpEntryDialog extends Vue {
 	};
 
 	created(): void {
-		if (isOpEntryEditing(this.operationInput)) {
-			this.DATA = Object.assign({}, this.operationInput.opEntry);
-		}
+		// if (isOpEntryEditing(this.operationInput)) {
+		// this.DATA = Object.assign({}, this.operationInput.opEntry);
+		// } else {
+		this.DATA = Object.assign(this.DATA, this.operationInput.opEntry);
+		// }
 	}
 
 	get dateValid(): boolean {

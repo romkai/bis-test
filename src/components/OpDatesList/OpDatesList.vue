@@ -1,40 +1,32 @@
 <template lang="pug">
-	div
-		h5.mb-0 {{ title }}
+	ListLayout
 
-		b-button(
-			v-if="checkPermissions(permissions, 'C')"
-			@click="addOpDate"
-			variant="outline-secondary"
-		)
-			b-icon-plus-circle-fill.mr-2(
-				variant="info"
-				shift-v="-1"
+		template(#panel)
+
+			Panel(
+				:title="title",
+				:cols="panelCols"
+				addText="Добавить опер.день"
+				@addItem="addOpDate"
 			)
-			span Добавить Опер.день
 
-		b-row.text-subtitle.text--secondary
-			b-col(cols="5") Дата операционного дня
-			b-col.text-right() Статус
-			b-col(cols="auto")
-				.item-btn-slot
+		template(#default)
 
-		.my-3.text-center(
-			v-if="opDates.length===0"
-		) Операционные дни не найдены
+			.my-3.text-center(
+				v-if="opDates.length===0"
+			) Операционные дни не найдены
 
-		OpDateItem(
-			v-else
-			v-for="opDate in opDates"
-			:key="opDate.OpDate"
-			:opDate="opDate"
-			:active="isActive(opDate)"
-			:nonClickable="nonClickable"
-			:permissions="permissions"
-			@click="click(opDate)"
-			@editOpDate="editOpDate(opDate)"
-			@deleteOpDate="deleteOpDate(opDate)"
-		)
+			OpDateItem(
+				v-else
+				v-for="opDate in opDates"
+				:key="opDate.OpDate"
+				:opDate="opDate"
+				:active="isActive(opDate)"
+				:nonClickable="nonClickable"
+				@click="click(opDate)"
+				@editOpDate="editOpDate(opDate)"
+				@deleteOpDate="deleteOpDate(opDate)"
+			)
 
 </template>
 
@@ -45,23 +37,30 @@ import { TOpDate } from '@/blogic/Entities/OpDate';
 import addOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/addOpDateOperation';
 import editOpDateOperation from '@/ui-operations/AddOrEditOpDateOperation/editOpDateOperation';
 import deleteOpDateOperation from '@/ui-operations/DeleteOpDateOperation/deleteOpDateOperation';
-import checkPermissions from '@/helpers/checkPermissions';
 import nothingToDo from '@/ui-operations/nothingToDo';
 import dbo from '@/blogic/Dbo/dbo';
 import OpDateItem from '@/components/OpDatesList/OpDateItem.vue';
+import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import Panel from '@/components/Template/Panel/Panel.vue';
+import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
+		ListLayout,
+		Panel,
 		OpDateItem,
 	},
 })
 export default class OpDatesList extends Vue {
 	@Prop({ type: String, default: 'Операционные дни' }) title!: string;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeOpDate: TOpDate|null = null;
-	checkPermissions = checkPermissions;
+
+	panelCols: TPanelCol[] = [
+		{ title: 'Дата операционного дня', cols: 5 },
+		{ title: 'Статус', textRight: true },
+	];
 
 	get opDates(): TOpDate[] {
 		return dbo.opDatesMgr.getOpDates();

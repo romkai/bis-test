@@ -6,7 +6,7 @@ import dbo from '@/blogic/Dbo/dbo';
 export default function(account: TAccount): Promise<void> {
 	return confirmOperation({
 		title: 'Удаление счета',
-		text: 'Вы действительно хотите удалить этот счет?',
+		text: `Вы действительно хотите удалить счет ${account.Acct}?`,
 	})
 		.then(() => dbo.accountsMgr.deleteAccount(account))
 		.catch(nothingToDo);

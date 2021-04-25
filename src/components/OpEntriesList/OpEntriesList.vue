@@ -1,49 +1,37 @@
 <template lang="pug">
-	div
-		h5.mb-0 {{ title }}
+	ListLayout
 
-		b-button(
-			v-if="checkPermissions(permissions, 'C')"
-			@click="addOpEntry"
-			variant="outline-secondary"
-		)
-			b-icon-plus-circle-fill.mr-2(
-				variant="info"
-				shift-v="-1"
+		template(#panel)
+
+			Panel(
+				:title="title",
+				:cols="panelCols"
+				addText="Добавить операцию"
+				@addItem="addOpEntry"
 			)
-			span Добавить операцию
 
-		b-row.text-subtitle.text--secondary
-			b-col(
-				v-if="!noDateCol"
-				cols="3"
-			) Дата опер.дня
-			b-col(cols="4") Счет Дебета / Кредита
-			b-col.text-right Сумма
-			b-col(cols="auto")
-				.item-btn-slot
+		template(#default)
 
-		.my-3.text-center(
-			v-if="!!requiredError"
-		) {{ requiredError }}
+			.my-3.text-center(
+				v-if="requiredError"
+			) {{ requiredError }}
 
-		.my-3.text-center(
-			v-else-if="opEntries.length===0"
-		) Операции не найдены
+			.my-3.text-center(
+				v-else-if="opEntries.length===0"
+			) Операции не найдены
 
-		OpEntryItem(
-			v-else
-			v-for="(opEntry, index) in opEntries"
-			:key="index"
-			:opEntry="opEntry"
-			:active="isActive(opEntry)"
-			:nonClickable="nonClickable"
-			:permissions="permissions"
-			:noDateCol="noDateCol"
-			@click="click(opEntry)"
-			@editOpEntry="editOpEntry(opEntry)"
-			@deleteOpEntry="deleteOpEntry(opEntry)"
-		)
+			OpEntryItem(
+				v-else
+				v-for="(opEntry, index) in opEntries"
+				:key="index"
+				:opEntry="opEntry"
+				:active="isActive(opEntry)"
+				:nonClickable="nonClickable"
+				:noDateCol="noDateCol"
+				@click="click(opEntry)"
+				@editOpEntry="editOpEntry(opEntry)"
+				@deleteOpEntry="deleteOpEntry(opEntry)"
+			)
 
 </template>
 
@@ -59,10 +47,14 @@ import OpEntryItem from '@/components/OpEntriesList/OpEntryItem.vue';
 import { TAccount } from '@/blogic/Entities/Account';
 import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
 import { TOpDate } from '@/blogic/Entities/OpDate';
-import checkPermissions from '@/helpers/checkPermissions';
+import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import Panel from '@/components/Template/Panel/Panel.vue';
+import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
+		ListLayout,
+		Panel,
 		OpEntryItem,
 	},
 })
@@ -72,10 +64,14 @@ export default class OpEntriesList extends Vue {
 	@Prop({ type: Object }) currentOpDate!: TOpDate|null|undefined;
 	@Prop({ type: Boolean, default: false }) noDateCol!: boolean;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeOpEntry: TOpEntry|null = null;
-	checkPermissions = checkPermissions;
+
+	panelCols: TPanelCol[] = [
+		{ title: 'Дата', cols: 3, hidden: this.noDateCol },
+		{ title: 'Счет Дебета / Кредита', cols: 4 },
+		{ title: 'Сумма', textRight: true },
+	];
 
 	get mode(): TOpEntryListMode {
 		if (this.currentAccount !== undefined) return TOpEntryListMode.FOR_ACCOUNT;
@@ -124,8 +120,18 @@ export default class OpEntriesList extends Vue {
 		return [];
 	}
 
+	get defaultNewOpEntry(): Partial<TOpEntry> {
+		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && this.currentAccount) return {
+			AcctDB: this.currentAccount.Acct,
+		}
+		if (this.mode === TOpEntryListMode.FOR_DATE && this.currentOpDate) return {
+			OpDate: this.currentOpDate.OpDate,
+		}
+		return {};
+	}
+
 	addOpEntry(): void {
-		addOpEntryOperation().then().catch(nothingToDo);
+		addOpEntryOperation({ opEntry: this.defaultNewOpEntry }).then().catch(nothingToDo);
 	}
 
 	editOpEntry(opEntry: TOpEntry): void {

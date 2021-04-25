@@ -10,7 +10,8 @@
 		b-col.text-right(cols="auto")
 			.item-btn-slot
 				b-button.mr-1(
-					v-if="checkPermissions(permissions, 'U')"
+					v-b-tooltip.hover
+					title="Редактировать"
 					variant="outline-info"
 					@click.stop="$emit('editAccount')"
 					size="sm"
@@ -18,7 +19,8 @@
 					b-icon(icon="pencil-square")
 
 				b-button.trash-icon-hover(
-					v-if="checkPermissions(permissions, 'D')"
+					v-b-tooltip.hover
+					title="Удалить"
 					variant="outline-secondary"
 					@click.stop="$emit('deleteAccount')"
 					size="sm"
@@ -32,7 +34,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import { TAccount } from '@/blogic/Entities/Account';
-import checkPermissions from '@/helpers/checkPermissions';
 import dbo from '@/blogic/Dbo/dbo';
 
 @Component
@@ -41,11 +42,9 @@ export default class AccountItem extends Vue {
 	@Prop({ type: String, required: true }) currentDate!: string;
 	@Prop({ type: Boolean, required: true }) active!: boolean;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
-	checkPermissions = checkPermissions;
 
 	getAcctOstForDate(acct: string): number {
 		return dbo.accountsMgr.getAcctOstForDate(acct, this.currentDate);

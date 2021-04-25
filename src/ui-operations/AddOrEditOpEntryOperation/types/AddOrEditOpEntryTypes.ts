@@ -1,6 +1,8 @@
 import { TOpEntry } from '@/blogic/Entities/OpEntry';
 
-export type TAddOpEntryOperationInput = void;
+export type TAddOpEntryOperationInput = {
+	opEntry: Partial<TOpEntry>;
+};
 
 export type TAddOpEntryOperationResult = {
 	opEntry: TOpEntry;
@@ -15,6 +17,6 @@ export type TEditOpEntryOperationResult = {
 }
 
 export function isOpEntryEditing(input: TAddOpEntryOperationInput|TEditOpEntryOperationInput): input is TEditOpEntryOperationInput {
-	return !!input && !!(<TEditOpEntryOperationInput>input).opEntry;
+	return (<TEditOpEntryOperationInput>input).opEntry.Id > 0;
 }
 

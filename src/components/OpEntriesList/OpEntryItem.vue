@@ -16,7 +16,8 @@
 		b-col.text-right(cols="auto")
 			.item-btn-slot
 				b-button.mr-1(
-					v-if="checkPermissions(permissions, 'U')"
+					v-b-tooltip.hover
+					title="Редактировать"
 					variant="outline-info"
 					@click.stop="$emit('editOpEntry')"
 					size="sm"
@@ -24,7 +25,8 @@
 					b-icon(icon="pencil-square")
 
 				b-button.trash-icon-hover(
-					v-if="checkPermissions(permissions, 'D')"
+					v-b-tooltip.hover
+					title="Удалить"
 					variant="outline-secondary"
 					@click.stop="$emit('deleteOpEntry')"
 					size="sm"
@@ -36,7 +38,6 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/Entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
-import checkPermissions from '@/helpers/checkPermissions';
 
 @Component
 export default class OpEntryItem extends Vue {
@@ -44,11 +45,9 @@ export default class OpEntryItem extends Vue {
 	@Prop({ type: Boolean, default: false }) active!: boolean;
 	@Prop({ type: Boolean, default: false }) noDateCol!: boolean;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	formatMoney = formatMoney;
 	moneyUnits = moneyUnits;
-	checkPermissions = checkPermissions;
 
 	get itemClass(): Record<string, boolean> {
 		return {

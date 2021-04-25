@@ -9,7 +9,8 @@
 		b-col.text-right(cols="auto")
 			.item-btn-slot
 				b-button.mr-1(
-					v-if="checkPermissions(permissions, 'U')"
+					v-b-tooltip.hover
+					title="Редактировать"
 					variant="outline-info"
 					@click.stop="$emit('editOpDate')"
 					size="sm"
@@ -17,7 +18,8 @@
 					b-icon(icon="pencil-square")
 
 				b-button.trash-icon-hover(
-					v-if="checkPermissions(permissions, 'D')"
+					v-b-tooltip.hover
+					title="Удалить"
 					variant="outline-secondary"
 					@click.stop="$emit('deleteOpDate')"
 					size="sm"
@@ -29,16 +31,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TOpDate } from '@/blogic/Entities/OpDate';
-import checkPermissions from '@/helpers/checkPermissions';
 
 @Component
 export default class OpDateItem extends Vue {
 	@Prop({ type: Object, required: true }) opDate!: TOpDate;
 	@Prop({ type: Boolean, required: true }) active!: boolean;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
-
-	checkPermissions = checkPermissions;
 
 	get itemClass(): Record<string, boolean> {
 		return {

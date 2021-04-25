@@ -1,42 +1,38 @@
 <template lang="pug">
-	div
-		h5.mb-0 {{ title }}
+	ListLayout
 
-		b-form-datepicker.mr-2(
-			v-model="currentDate"
-			style="width: 270px"
-			button-variant="info"
-		)
+		template(#panel)
 
-		b-button(
-			v-if="checkPermissions(permissions, 'C')"
-			@click="addAccount"
-			variant="outline-secondary"
-		)
-			b-icon-plus-circle-fill.mr-2(
-				variant="info"
-				shift-v="-1"
+			Panel(
+				:title="title",
+				:cols="panelCols"
+				addText="Добавить счет"
+				@addItem="addAccount"
 			)
-			span Добавить счет
+				b-form-datepicker.mr-2(
+					v-model="currentDate"
+					style="width: 270px"
+					button-variant="info"
+					:date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+				)
 
-		b-row.text-subtitle.text--secondary
-			b-col(cols="5") Номер счета
-			b-col.text-right() Остаток
-			b-col(cols="auto")
-				.item-btn-slot
+		template(#default)
 
-		AccountItem(
-			v-for="account in accounts"
-			:key="account.Acct"
-			:account="account"
-			:currentDate="currentDate"
-			:active="isActive(account)"
-			:nonClickable="nonClickable"
-			:permissions="permissions"
-			@click="click(account)"
-			@editAccount="editAccount(account)"
-			@deleteAccount="deleteAccount(account)"
-		)
+			.my-3.text-center(
+				v-if="accounts.length===0"
+			) Счета не найдены
+
+			AccountItem(
+				v-for="account in accounts"
+				:key="account.Acct"
+				:account="account"
+				:currentDate="currentDate"
+				:active="isActive(account)"
+				:nonClickable="nonClickable"
+				@click="click(account)"
+				@editAccount="editAccount(account)"
+				@deleteAccount="deleteAccount(account)"
+			)
 
 </template>
 
@@ -49,21 +45,28 @@ import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/edit
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import AccountItem from '@/components/AccountsList/AccountItem.vue';
 import dbo from '@/blogic/Dbo/dbo';
-import checkPermissions from '@/helpers/checkPermissions';
+import Panel from '@/components/Template/Panel/Panel.vue';
+import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
+		ListLayout,
+		Panel,
 		AccountItem,
 	},
 })
 export default class AccountsList extends Vue {
 	@Prop({ type: String, default: 'Банковские счета' }) title!: string;
 	@Prop({ type: Boolean, default: false }) nonClickable!: boolean;
-	@Prop({ type: String, default: 'CRUD' }) permissions!: string;
 
 	activeAccount: TAccount|null = null;
 	currentDate = dbo.opDatesMgr.getLastDate();
-	checkPermissions = checkPermissions;
+
+	panelCols: TPanelCol[] = [
+		{ title: 'Наименование', cols: 5 },
+		{ title: 'Остаток', textRight: true },
+	];
 
 	get accounts(): TAccount[] {
 		return dbo.accountsMgr.getAccounts();

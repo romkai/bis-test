@@ -5,7 +5,6 @@
 			OpEntriesList(
 				title="Список операций"
 				@onActiveOpEntry="activeOpEntry=$event"
-				permissions="CRUD"
 			)
 
 		template(#right)
@@ -20,7 +19,7 @@
 
 import { Component, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/Entities/OpEntry';
-import PageTemplate from '@/components/PageTemplate/PageTemplate.vue';
+import PageTemplate from '@/components/Template/PageTemplate/PageTemplate.vue';
 import OpEntryInfo from '@/components/OpEntryInfo/OpEntryInfo.vue';
 import OpEntriesList from '@/components/OpEntriesList/OpEntriesList.vue';
 
