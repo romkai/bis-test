@@ -37,7 +37,7 @@ $border-color: #dadada;
 		.scroll-area {
 			padding: 0 (($padding - $wrapper-padding) - $scroll-width) 0 ($padding - $wrapper-padding);
 			overflow: hidden;
-			// overflow-y: scroll;
+		 	overflow-y: scroll;
 			scroll-behavior: smooth;
 			height: 100%;
 		}

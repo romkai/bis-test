@@ -1,9 +1,9 @@
 <template lang="pug">
 	ListLayout
 
-		template(#panel)
+		template(#header)
 
-			Panel(
+			ListHeader(
 				title="Список проводок",
 				:cols="panelCols"
 				:actionButtons="false"
@@ -32,11 +32,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TOpEntry } from '@/blogic/Entities/OpEntry';
 import { formatMoney, moneyUnits } from '@/helpers/money';
 import dbo from '@/blogic/Dbo/dbo';
-import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import THeaderCol from '@/components/Template/ListHeader/types/ListHeaderTypes';
 import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
-import Panel from '@/components/Template/Panel/Panel.vue';
+import ListHeader from '@/components/Template/ListHeader/ListHeader.vue';
 @Component({
-	components: { Panel, ListLayout },
+	components: { ListHeader, ListLayout },
 })
 export default class OpEntryInfo extends Vue {
 	@Prop({ type: String, default: 'Список проводок' }) title!: string;
@@ -46,7 +46,7 @@ export default class OpEntryInfo extends Vue {
 	moneyUnits = moneyUnits;
 	formatMoney = formatMoney;
 
-	panelCols: TPanelCol[] = [
+	panelCols: THeaderCol[] = [
 		{ title: 'Счет дебета и кредита', cols: 6 },
 		{ title: 'Остаток', cols: 6, textRight: true },
 	];

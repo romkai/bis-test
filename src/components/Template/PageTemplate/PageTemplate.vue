@@ -1,29 +1,10 @@
 <template lang="pug">
-	.page-template__container
-		.page-template__wrapper
-			.page-template__column
-				.page-template__column-main
-					.page-template__content(
-						:class="{ 'transition': animatingLeft }"
-					)
-						.scroll-area(
-							ref="scrollAreaLeft"
-							@scroll=""
-						)
-							slot(name="left")
-				.page-template__column-footer
+	.page-template__wrapper
+		.page-template__column
+			slot(name="left")
 
-			.page-template__column
-				.page-template__column-main
-					.page-template__content(
-						:class="{ 'transition': animatingRight }"
-					)
-						.scroll-area(
-							ref="scrollAreaRight"
-							@scroll=""
-						)
-							slot(name="right")
-				.page-template__column-footer
+		.page-template__column
+			slot(name="right")
 
 </template>
 
@@ -31,82 +12,23 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class PageTemplate extends Vue {
-	animatingLeft = false;
-	animatingRight = false;
-}
+export default class PageTemplate extends Vue {}
 </script>
 
 <style lang="scss">
-@import "../../../assets/style/utils";
+@import "src/assets/style/utils";
 
-.page-template__container {
-	height: calc(100vh - 56px);
-
-	.page-template__wrapper {
+.page-template {
+	&__wrapper {
 		@include flex-inline;
-
-		.page-template__column {
-			@include flex-column;
-			flex: 1 1 50%;
-			max-width: 50%;
-
-			.page-template__column-header {
-				margin: 0 8px;
-				display: flex;
-
-				.page-template__header-title {
-					@include indent-inside;
-					display: flex;
-					align-items: center;
-					height: 80px;
-				}
-
-				.page-template__header-action {
-					@include indent-inside;
-					display: flex;
-					align-items: center;
-					height: 80px;
-					margin-left: auto;
-				}
-			}
-
-			.page-template__column-main {
-				@include indent-outside;
-				flex: 1 1 auto;
-				@include flex-column;
-				border: 1px solid $border-color;
-				border-radius: 4px 4px 0 0;
-
-				.page-template__main-top {
-					@include indent-inside;
-					border-bottom: 1px solid $border-color;
-					background-color: #f4fbf6;
-					padding-top: 8px;
-					padding-bottom: 8px;
-				}
-
-				.page-template__content {
-					@include indent-inside('scroll');
-					@include flex-main;
-					opacity: 1;
-					transition: all 100ms;
-
-					&.transition {
-						transition: all 0ms;
-						opacity: 0;
-					}
-				}
-			}
-
-			.page-template__column-footer {
-				@include indent-outside;
-				@include indent-inside;
-				min-height: 12px;
-				border-left: 1px solid $border-color;
-				border-right: 1px solid $border-color;
-			}
-		}
+		height: calc(100vh - 56px);
+	}
+	&__column {
+		flex: 1 1 50%;
+		max-width: 50%;
+		@include indent-inside;
+		height: 100%;
+		overflow: hidden;
 	}
 }
 </style>

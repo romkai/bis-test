@@ -1,9 +1,9 @@
 <template lang="pug">
 	ListLayout
 
-		template(#panel)
+		template(#header)
 
-			Panel(
+			ListHeader(
 				:title="title",
 				:cols="panelCols"
 				addText="Добавить операцию"
@@ -47,14 +47,14 @@ import OpEntryItem from '@/components/OpEntriesList/OpEntryItem.vue';
 import { TAccount } from '@/blogic/Entities/Account';
 import { TOpEntryListMode } from '@/components/OpEntriesList/types/OpEntryListTypes';
 import { TOpDate } from '@/blogic/Entities/OpDate';
-import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
-import Panel from '@/components/Template/Panel/Panel.vue';
+import THeaderCol from '@/components/Template/ListHeader/types/ListHeaderTypes';
+import ListHeader from '@/components/Template/ListHeader/ListHeader.vue';
 import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
 		ListLayout,
-		Panel,
+		ListHeader,
 		OpEntryItem,
 	},
 })
@@ -67,7 +67,7 @@ export default class OpEntriesList extends Vue {
 
 	activeOpEntry: TOpEntry|null = null;
 
-	panelCols: TPanelCol[] = [
+	panelCols: THeaderCol[] = [
 		{ title: 'Дата', cols: 3, hidden: this.noDateCol },
 		{ title: 'Счет Дебета / Кредита', cols: 4 },
 		{ title: 'Сумма', textRight: true },
@@ -121,12 +121,8 @@ export default class OpEntriesList extends Vue {
 	}
 
 	get defaultNewOpEntry(): Partial<TOpEntry> {
-		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && this.currentAccount) return {
-			AcctDB: this.currentAccount.Acct,
-		}
-		if (this.mode === TOpEntryListMode.FOR_DATE && this.currentOpDate) return {
-			OpDate: this.currentOpDate.OpDate,
-		}
+		if (this.mode === TOpEntryListMode.FOR_ACCOUNT && this.currentAccount) return { AcctDB: this.currentAccount.Acct };
+		if (this.mode === TOpEntryListMode.FOR_DATE && this.currentOpDate) return {	OpDate: this.currentOpDate.OpDate };
 		return {};
 	}
 

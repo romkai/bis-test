@@ -1,9 +1,9 @@
 <template lang="pug">
 	ListLayout
 
-		template(#panel)
+		template(#header)
 
-			Panel(
+			ListHeader(
 				:title="title",
 				:cols="panelCols"
 				addText="Добавить опер.день"
@@ -40,14 +40,14 @@ import deleteOpDateOperation from '@/ui-operations/DeleteOpDateOperation/deleteO
 import nothingToDo from '@/ui-operations/nothingToDo';
 import dbo from '@/blogic/Dbo/dbo';
 import OpDateItem from '@/components/OpDatesList/OpDateItem.vue';
-import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
-import Panel from '@/components/Template/Panel/Panel.vue';
+import THeaderCol from '@/components/Template/ListHeader/types/ListHeaderTypes';
+import ListHeader from '@/components/Template/ListHeader/ListHeader.vue';
 import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
 		ListLayout,
-		Panel,
+		ListHeader,
 		OpDateItem,
 	},
 })
@@ -57,7 +57,7 @@ export default class OpDatesList extends Vue {
 
 	activeOpDate: TOpDate|null = null;
 
-	panelCols: TPanelCol[] = [
+	panelCols: THeaderCol[] = [
 		{ title: 'Дата операционного дня', cols: 5 },
 		{ title: 'Статус', textRight: true },
 	];

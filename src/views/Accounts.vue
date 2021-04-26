@@ -35,9 +35,3 @@ export default class Accounts extends Vue {
 	activeAccount: TAccount|null = null;
 }
 </script>
-
-<style lang="scss">
-@import "../assets/style/utils";
-
-
-</style>

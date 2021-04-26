@@ -1,9 +1,11 @@
 <template lang="pug">
-	div
-		div.my-panel
-			slot(name="panel")
-		div.my-scroll
-			slot(name="default")
+	.list-layout__wrapper
+		.list-layout__header
+			slot(name="header")
+
+		.list-layout__main
+			.scroll-area
+				slot(name="default")
 
 </template>
 
@@ -18,13 +20,30 @@ export default class ListLayout extends Vue {
 </script>
 
 <style lang="scss">
-.my-panel {
-	height: 110px;
+@import "src/assets/style/utils";
+
+.list-layout {
+	&__wrapper {
+		@include flex-column;
+	}
+	&__header {
+		height: 90px;
+	}
+	&__main {
+		@include indent-inside('scroll');
+		@include flex-main;
+	}
 }
-.my-scroll {
-	overflow: hidden;
-	overflow-y: scroll;
-	height: calc(100vh - 200px);
-}
+
+
+
+//.my-panel {
+//	height: 110px;
+//}
+//.my-scroll {
+//	overflow: hidden;
+//	overflow-y: scroll;
+//	height: calc(100vh - 200px);
+//}
 </style>
 

@@ -1,9 +1,9 @@
 <template lang="pug">
 	ListLayout
 
-		template(#panel)
+		template(#header)
 
-			Panel(
+			ListHeader(
 				:title="title",
 				:cols="panelCols"
 				addText="Добавить счет"
@@ -11,8 +11,7 @@
 			)
 				b-form-datepicker.mr-2(
 					v-model="currentDate"
-					style="width: 270px"
-					button-variant="info"
+					style="width: 200px"
 					:date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
 				)
 
@@ -45,14 +44,14 @@ import editAccountOperation from '@/ui-operations/AddOrEditAccountOperation/edit
 import deleteAccountOperation from '@/ui-operations/DeleteAccountOperation/deleteAccountOperation';
 import AccountItem from '@/components/AccountsList/AccountItem.vue';
 import dbo from '@/blogic/Dbo/dbo';
-import Panel from '@/components/Template/Panel/Panel.vue';
-import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import ListHeader from '@/components/Template/ListHeader/ListHeader.vue';
+import THeaderCol from '@/components/Template/ListHeader/types/ListHeaderTypes';
 import ListLayout from '@/components/Template/ListLayout/ListLayout.vue';
 
 @Component({
 	components: {
 		ListLayout,
-		Panel,
+		ListHeader,
 		AccountItem,
 	},
 })
@@ -63,7 +62,7 @@ export default class AccountsList extends Vue {
 	activeAccount: TAccount|null = null;
 	currentDate = dbo.opDatesMgr.getLastDate();
 
-	panelCols: TPanelCol[] = [
+	panelCols: THeaderCol[] = [
 		{ title: 'Наименование', cols: 5 },
 		{ title: 'Остаток', textRight: true },
 	];

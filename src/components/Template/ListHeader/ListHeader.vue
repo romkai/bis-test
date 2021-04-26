@@ -7,7 +7,7 @@
 			b-col()
 				slot
 
-			b-col.text-right()
+			b-col.text-right
 				b-button(
 					v-if="addText"
 					@click="$emit('addItem')"
@@ -19,30 +19,30 @@
 					)
 					span {{ addText }}
 
-		b-row.text-subtitle.text--secondary
-			b-col(
-				v-for="(col, index) in cols.filter(c => !c.hidden)"
-				:key="index"
-				:cols="col.cols"
-				:class="{ 'text-right': col.textRight }"
-			) {{ col.title }}
-			b-col(
-				v-if="actionButtons"
-				cols="auto"
-			)
-				.item-btn-slot Действия
+		//b-row.text-subtitle.text--secondary
+		//	b-col(
+		//		v-for="(col, index) in cols.filter(c => !c.hidden)"
+		//		:key="index"
+		//		:cols="col.cols"
+		//		:class="{ 'text-right': col.textRight }"
+		//	) {{ col.title }}
+		//	b-col(
+		//		v-if="actionButtons"
+		//		cols="auto"
+		//	)
+		//		.item-btn-slot Действия
 
 </template>
 
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import TPanelCol from '@/components/Template/Panel/types/ListPanelTypes';
+import THeaderCol from '@/components/Template/ListHeader/types/ListHeaderTypes';
 
 @Component
-export default class Panel extends Vue {
+export default class ListHeader extends Vue {
 	@Prop({ type: String, default: 'Заголовок' }) title!: string;
-	@Prop({ type: Array, default: () => [] }) cols!: TPanelCol[];
+	@Prop({ type: Array, default: () => [] }) cols!: THeaderCol[];
 	@Prop({ type: String }) addText!: string;
 	@Prop({ type: Boolean, default: true }) actionButtons!: boolean;
 }
